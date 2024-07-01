@@ -8,7 +8,7 @@ const Header: React.FC = () => {
       <div className="hidden w-full max-w-5xl xl:flex xl:mx-auto justify-end">
         <ProfileSummary />
       </div>
-      <div className="w-full max-w-5xl xl:mx-auto flex xl:justify-between items-center mb-6 bg-white">
+      <div className="w-full max-w-5xl xl:mx-auto flex justify-between items-center mb-6 bg-white">
         <img src="/images/logo.svg" alt="Do store" className="h-10 xl:h-12" />
         <div className="hidden xl:block xl:w-full xl:max-w-lg xl:mr-20">
           <SearchBar />
