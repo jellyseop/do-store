@@ -1,6 +1,14 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProfileSummary: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleOnClick = () => {
+    navigate("/mypage");
+  };
+
   return (
     <div className="flex justify-between items-center px-6 py-6 xl:p-0 xl:mb-6 bg-gray-100 xl:bg-white text-gray-700">
       <div className="text-sm xl:text-xs text-gray-700 flex">
@@ -20,7 +28,7 @@ const ProfileSummary: React.FC = () => {
         />
       </div>
       {/* TODO: Link로 교체 */}
-      <div className="text-sm text-gray-400 xl:hidden">내역보기{" >"}</div>
+      <div className="text-sm text-gray-400">내역보기{" >"}</div>
     </div>
   );
 };
