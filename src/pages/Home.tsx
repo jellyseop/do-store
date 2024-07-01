@@ -38,7 +38,9 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <ProfileSummary />
+      <div className="xl:hidden">
+        <ProfileSummary />
+      </div>
       <div className="bg-gray-100">
         <RankingList />
         <ProductList title="온라인 상품" products={onlineProducts} />

@@ -1,5 +1,6 @@
 import React from "react";
 import { formatMoney } from "../util";
+import SectionHeader from "./SectionHeader";
 
 const badges = ["top-green", "top-pink", "top-yellow"];
 
@@ -55,21 +56,7 @@ const RankingChild: React.FC<IRankingChildProps> = ({
 const RankingList: React.FC = () => {
   return (
     <section className="mb-4 p-6 bg-white">
-      <div className="flex justify-between items-center">
-        <div className="flex gap-x-3 items-center text-gray-800">
-          <h2 className="text-lg">Do money 랭킹</h2>
-          {/* TODO: Link로 교체*/}
-          <div className="text-xs text-gray-400">전체보기{" >"}</div>
-        </div>
-        <button className="text-sm px-3 py-1 rounded-full border border-gray-300 flex items-center">
-          높은 순
-          <img
-            src="/images/arrow-down.svg"
-            alt="arrow-down"
-            className="w-3 aspect-square ml-2"
-          />
-        </button>
-      </div>
+      <SectionHeader title="Do money 랭킹" linkTo="abc" />
       <ul className="mt-2">
         {rankers.map((ranker, index) => (
           <RankingChild
