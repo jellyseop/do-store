@@ -2,7 +2,7 @@ import React from "react";
 
 const SearchBar: React.FC = () => {
   return (
-    <div className="relative my-4">
+    <div className="relative">
       <input
         type="text"
         className="w-full p-2 pl-12 py-3 bg-gray-100 rounded-lg"
