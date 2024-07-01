@@ -1,6 +1,14 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProfileSummary: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleOnClick = () => {
+    navigate("/mypage");
+  }
+
   return (
     <div className="flex justify-between items-center bg-gray-100 px-6 py-5">
       <div className="text-sm text-gray-800 flex">
@@ -15,7 +23,11 @@ const ProfileSummary: React.FC = () => {
         <span className="mr-1">Steve</span> 님
       </div>
       {/* TODO: Link로 교체 */}
-      <div className="text-sm text-gray-400">내역보기{" >"}</div>
+      {location.pathname === "/" && (
+        <div onClick={handleOnClick} className="text-sm text-gray-400">
+          내역보기{" >"}
+        </div>
+      )}
     </div>
   );
 };
