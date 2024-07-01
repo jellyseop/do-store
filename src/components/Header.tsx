@@ -3,18 +3,13 @@ import SearchBar from "./SearchBar";
 
 const Header: React.FC = () => {
   return (
-    <header className="pt-6 px-6">
-      <div className="flex items-center justify-between bg-white mb-4 ">
-        <img
-          src="/images/menu-icon.svg"
-          alt="Menu"
-          className="w-8 aspect-square"
-        />
+    <header className="pt-8 px-6">
+      <div className="flex justify-between items-center mb-6 bg-white">
         <img src="/images/logo.svg" alt="Do store" className="h-10" />
         <img
           src="/images/cart-icon.svg"
           alt="Cart"
-          className="w-8 aspect-square"
+          className="w-7 aspect-square"
         />
       </div>
       <SearchBar />

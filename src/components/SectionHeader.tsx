@@ -8,7 +8,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, linkTo }) => {
     <div className="flex gap-x-3 items-center text-gray-800 mb-2">
       <h2 className="text-lg">{title}</h2>
       {/* TODO: Link로 교체*/}
-      <div id={linkTo} className="text-sm text-gray-400">
+      <div id={linkTo} className="text-xs text-gray-400">
         전체보기{" >"}
       </div>
     </div>

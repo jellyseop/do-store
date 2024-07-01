@@ -10,8 +10,8 @@ const ProfileSummary: React.FC = () => {
   }
 
   return (
-    <div className="flex justify-between items-center bg-gray-100 px-6 py-5">
-      <div className="text-sm text-gray-800 flex">
+    <div className="flex justify-between items-center px-6 py-6 bg-gray-100">
+      <div className="text-sm text-gray-700 flex">
         보유 Do money
         <span className=" ml-3 mr-1 text-md">523</span>
         <img
@@ -21,6 +21,11 @@ const ProfileSummary: React.FC = () => {
         />
         <span className="mx-2">|</span>
         <span className="mr-1">Steve</span> 님
+        <img
+          src={`/images/badges/top-green.svg`}
+          alt="badge"
+          className="w-5 aspect-square ml-1"
+        />
       </div>
       {/* TODO: Link로 교체 */}
       {location.pathname === "/" && (
