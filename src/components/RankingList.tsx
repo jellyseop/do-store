@@ -1,4 +1,5 @@
 import React from "react";
+import { formatMoney } from "../util";
 
 const badges = ["top-green", "top-pink", "top-yellow"];
 
@@ -17,10 +18,6 @@ const rankers = [
   },
 ];
 
-const formatMoney = (amount: number): string => {
-  return new Intl.NumberFormat("ko-KR").format(amount);
-};
-
 interface IRankingChildProps {
   rank: number;
   name: string;
@@ -33,20 +30,20 @@ const RankingChild: React.FC<IRankingChildProps> = ({
   doMoney,
 }) => {
   return (
-    <li className="flex items-center py-4 border-b border-gray-200">
+    <li className="flex items-center py-4 border-b last:border-none last:pb-0 border-gray-200">
       <span className="font-light ml-3">{rank + 1}</span>
       <img
         src={`/images/badges/${badges[rank]}.svg`}
         alt="badge"
-        className="w-8 aspect-square ml-5 mr-3"
+        className="w-8 aspect-square ml-7 mr-3"
       />
       <div className="flex flex-col items-start">
-        <span>{name}</span>
+        <span className="text-lg tracking-wide text-gray-800">{name}</span>
         <div className="flex">
           <img
             src="/images/coin-icon.svg"
             alt="coin"
-            className="w-3 aspect-square mr-1"
+            className="w-4 aspect-square mr-0.5"
           />
           <span className="text-xs text-gray-400">{formatMoney(doMoney)}</span>
         </div>
@@ -57,12 +54,12 @@ const RankingChild: React.FC<IRankingChildProps> = ({
 
 const RankingList: React.FC = () => {
   return (
-    <section className="pt-4 mb-4 px-6 bg-white">
+    <section className="mb-4 p-6 bg-white">
       <div className="flex justify-between items-center">
-        <div className="flex gap-x-3 items-center text-gray-800 mb-2">
+        <div className="flex gap-x-3 items-center text-gray-800">
           <h2 className="text-lg">Do money 랭킹</h2>
           {/* TODO: Link로 교체*/}
-          <div className="text-sm text-gray-400">전체보기{" >"}</div>
+          <div className="text-xs text-gray-400">전체보기{" >"}</div>
         </div>
         <button className="text-sm px-3 py-1 rounded-full border border-gray-300 flex items-center">
           높은 순
@@ -73,7 +70,7 @@ const RankingList: React.FC = () => {
           />
         </button>
       </div>
-      <ul>
+      <ul className="mt-2">
         {rankers.map((ranker, index) => (
           <RankingChild
             rank={index}
