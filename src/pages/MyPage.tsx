@@ -1,10 +1,12 @@
 import React from "react";
+import ProfileSummary from "../components/ProfileSummary";
+import MenuList from "../components/MenuList";
 
 const MyPage: React.FC = () => {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">My Page</h1>
-      <p>This is the My Page.</p>
+    <div className="">
+      <ProfileSummary/>
+      <MenuList />
     </div>
   );
 };
