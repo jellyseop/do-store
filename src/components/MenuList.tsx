@@ -13,12 +13,12 @@ const MenuList: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white xl:border">
       {menuItems.map((item, index) => (
         <div
           key={index}
           onClick={() => navigate(item.path)}
-          className="p-4 border-b flex justify-between items-center cursor-pointer"
+          className="p-4 border-b flex justify-between items-center cursor-pointer xl:border-b xl:last:border-none"
         >
           <span>{item.label}</span>
           <span>{">"}</span>
