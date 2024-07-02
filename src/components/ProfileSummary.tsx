@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
-const ProfileSummary: React.FC = () => {
-  const location = useLocation();
+interface IProfileSummary {
+  name?: string;
+  badge?: string;
+  showLink: boolean;
+}
 
+const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
   return (
     <div className="flex justify-between items-center px-6 py-6 xl:p-0 xl:mb-6 bg-gray-100 xl:bg-white text-gray-700">
       <div className="text-sm xl:text-xs text-gray-700 flex">
@@ -23,7 +26,8 @@ const ProfileSummary: React.FC = () => {
           className="w-5 xl:w-4 aspect-square ml-1"
         />
       </div>
-      {location.pathname === "/" && (
+
+      {showLink && (
         <Link to="/mypage" className="text-sm text-gray-400">
           내역보기{" >"}
         </Link>

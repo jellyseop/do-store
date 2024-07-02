@@ -7,10 +7,11 @@ import SearchResults from "./pages/SearchResult";
 import Header from "./components/Header";
 import DoMoneyHistory from "./pages/DoMoneyHistory";
 import OrderHistory from "./pages/OrderHistory";
+import Ranking from "./pages/Ranking";
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen w-full">
+    <div className="flex flex-col min-h-screen w-full relative">
       <Header />
 
       <Routes>
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
         <Route path="/orderHistory" element={<OrderHistory />} />
+        <Route path="/ranking" element={<Ranking />} />
       </Routes>
     </div>
   );
