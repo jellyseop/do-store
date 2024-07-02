@@ -5,10 +5,10 @@ import MenuList from "../components/MenuList";
 const MyPage: React.FC = () => {
   return (
     <div className="min-h-screen">
-      <main className="p-6 xl:container xl:mx-auto">
+      <main className="px-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
-          <ProfileSummary />
+          <ProfileSummary showLink={false} />
           <MenuList />
         </div>
 

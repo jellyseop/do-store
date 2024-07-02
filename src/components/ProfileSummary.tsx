@@ -1,13 +1,14 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const ProfileSummary: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+interface IProfileSummary {
+  name?: string;
+  badge?: string;
+  showLink: boolean;
+}
 
-  const handleOnClick = () => {
-    navigate("/mypage");
-  };
+const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
+  console.log(showLink);
 
   return (
     <div className="flex justify-between items-center px-6 py-6 xl:p-0 xl:mb-6 bg-gray-100 xl:bg-white text-gray-700">
@@ -27,8 +28,12 @@ const ProfileSummary: React.FC = () => {
           className="w-5 xl:w-4 aspect-square ml-1"
         />
       </div>
-      {/* TODO: Link로 교체 */}
-      <div className="text-sm text-gray-400">내역보기{" >"}</div>
+
+      {showLink && (
+        <Link to="/mypage" className="text-sm text-gray-400">
+          내역보기{" >"}
+        </Link>
+      )}
     </div>
   );
 };

@@ -5,38 +5,6 @@ import SectionHeader from "./SectionHeader";
 const badges = ["top-green", "top-pink", "top-yellow", "dude"];
 const medals = ["gold", "silver", "bronze"];
 
-const rankers = [
-  {
-    name: "Antony",
-    doMoney: 6011,
-  },
-  {
-    name: "Sarah",
-    doMoney: 3290,
-  },
-  {
-    name: "Steve",
-    doMoney: 2900,
-  },
-];
-
-const dudes = [
-  {
-    name: "Emily",
-    doMoney: -930,
-  },
-  {
-    name: "Jane",
-    doMoney: -1020,
-  },
-  {
-    name: "David",
-    doMoney: -2400,
-  },
-];
-
-const total = 120;
-
 interface IRankingChildProps {
   rank: number;
   name: string;
@@ -91,7 +59,25 @@ const RankingChild: React.FC<IRankingChildProps> = ({
   );
 };
 
-const RankingList: React.FC = () => {
+interface IRank {
+  id: number;
+  name: string;
+  balance: number;
+}
+
+interface IRankingList {
+  isSummary: boolean;
+  rankers: IRank[];
+  dudes: IRank[];
+  total: number;
+}
+
+const RankingList: React.FC<IRankingList> = ({
+  isSummary,
+  rankers,
+  dudes,
+  total,
+}) => {
   return (
     <section className="mb-4 xl:mb-0 p-6 xl:py-12 bg-white xl:bg-gray-100">
       <div className="xl:hidden">
@@ -108,9 +94,10 @@ const RankingList: React.FC = () => {
       <ul className="mt-2 xl:hidden">
         {rankers.map((ranker, index) => (
           <RankingChild
+            key={index}
             rank={index}
             name={ranker.name}
-            doMoney={ranker.doMoney}
+            doMoney={ranker.balance}
           />
         ))}
       </ul>
@@ -118,18 +105,20 @@ const RankingList: React.FC = () => {
         <div className="flex-1">
           {rankers.map((ranker, index) => (
             <RankingChild
+              key={index}
               rank={index}
               name={ranker.name}
-              doMoney={ranker.doMoney}
+              doMoney={ranker.balance}
             />
           ))}
         </div>
         <div className="flex-1">
           {dudes.map((ranker, index) => (
             <RankingChild
+              key={index}
               rank={total - 3 + index}
               name={ranker.name}
-              doMoney={ranker.doMoney}
+              doMoney={ranker.balance}
             />
           ))}
         </div>

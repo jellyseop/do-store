@@ -93,13 +93,13 @@ const ProductList: React.FC<ProductListProps> = ({ title, desc, products }) => {
       {/*모바일 리스트*/}
       <ul className="xl:hidden mt-2">
         {products.map((product, idx) => (
-          <Product idx={idx} product={product} />
+          <Product key={idx} idx={idx} product={product} />
         ))}
       </ul>
       {/*웹 리스트*/}
       <ul className="hidden xl:grid grid-cols-4 gap-x-4 w-full max-w-5xl mx-auto mt-2 pb-6">
         {products.map((product, idx) => (
-          <Product idx={idx} product={product} />
+          <Product key={idx} idx={idx} product={product} />
         ))}
       </ul>
     </section>
