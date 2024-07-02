@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   const { pathname } = useLocation();
 
   return (
-    <header className="pt-8 xl:pt-4 px-6 w-full xl:border-b xl:border-gray-200">
+    <header className=" sticky top-0 left-0 pt-8 xl:pt-4 px-6 w-full border-b border-gray-200 bg-white ">
       {/*웹 프로필*/}
       <div className="hidden w-full max-w-5xl xl:flex xl:mx-auto justify-end">
         <ProfileSummary showLink={true} />

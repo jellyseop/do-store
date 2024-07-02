@@ -2,13 +2,7 @@ import React from "react";
 import RankingList from "../components/RankingList";
 import ProductList from "../components/ProductList";
 import ProfileSummary from "../components/ProfileSummary";
-import {
-  MdudesSummay,
-  MrankerSummary,
-  OFFLINE_PRODUCTS,
-  ONLINE_PRODUCTS,
-  accounts,
-} from "../mock";
+import { MRanksSummary, OFFLINE_PRODUCTS, ONLINE_PRODUCTS } from "../mock";
 
 const Home: React.FC = () => {
   return (
@@ -17,12 +11,7 @@ const Home: React.FC = () => {
         <ProfileSummary showLink={true} />
       </div>
       <div className="bg-gray-100">
-        <RankingList
-          isSummary={true}
-          rankers={MrankerSummary}
-          dudes={MdudesSummay}
-          total={accounts.length}
-        />
+        <RankingList isSummary={true} ranks={MRanksSummary} />
         <ProductList
           title="온라인 상품"
           desc={"주문하면 학원으로 배송되는 상품"}

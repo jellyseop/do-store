@@ -10,7 +10,7 @@ import Ranking from "./pages/Ranking";
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen w-full">
+    <div className="flex flex-col min-h-screen w-full relative">
       <Header />
 
       <Routes>

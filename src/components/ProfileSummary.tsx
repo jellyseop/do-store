@@ -8,8 +8,6 @@ interface IProfileSummary {
 }
 
 const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
-  console.log(showLink);
-
   return (
     <div className="flex justify-between items-center px-6 py-6 xl:p-0 xl:mb-6 bg-gray-100 xl:bg-white text-gray-700">
       <div className="text-sm xl:text-xs text-gray-700 flex">

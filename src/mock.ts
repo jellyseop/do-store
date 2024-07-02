@@ -313,25 +313,13 @@ export const accounts: IAccount[] = [
   {
     id: 109,
     name: "Spring",
-    balance: 2422,
+    balance: -778,
     records: [
       {
-        amount: 4612,
+        amount: -778,
         createdBy: "John",
         detail: "hw",
         createdAt: new Date("2023-06-08"),
-      },
-      {
-        amount: 2481,
-        createdBy: "Alex",
-        detail: "project",
-        createdAt: new Date("2023-11-05"),
-      },
-      {
-        amount: -4671,
-        createdBy: "John",
-        detail: "exam",
-        createdAt: new Date("2023-01-11"),
       },
     ],
   },
@@ -363,43 +351,13 @@ export const accounts: IAccount[] = [
   {
     id: 111,
     name: "Morre",
-    balance: 2284,
+    balance: -1024,
     records: [
       {
-        amount: -678,
+        amount: -1024,
         createdBy: "Alex",
         detail: "hw",
         createdAt: new Date("2023-03-12"),
-      },
-      {
-        amount: -900,
-        createdBy: "Sally",
-        detail: "hw",
-        createdAt: new Date("2023-09-22"),
-      },
-      {
-        amount: 1056,
-        createdBy: "Sally",
-        detail: "hw",
-        createdAt: new Date("2023-11-30"),
-      },
-      {
-        amount: 2130,
-        createdBy: "John",
-        detail: "project",
-        createdAt: new Date("2023-12-22"),
-      },
-      {
-        amount: 2013,
-        createdBy: "Sally",
-        detail: "exam",
-        createdAt: new Date("2023-02-01"),
-      },
-      {
-        amount: -1337,
-        createdBy: "John",
-        detail: "exam",
-        createdAt: new Date("2023-02-22"),
       },
     ],
   },
@@ -407,29 +365,50 @@ export const accounts: IAccount[] = [
 
 const sorted = accounts.sort((a, b) => a.balance - b.balance);
 
-export const MrankerSummary = sorted
+export interface IRankElem {
+  id: number;
+  rank: number;
+  name: string;
+  balance: number;
+}
+
+const ranker: IRankElem[] = sorted
   .reverse()
   .slice(0, 3)
-  .map((account) => {
+  .map((account, index) => {
     const data = {
       id: account.id,
+      rank: index + 1,
       name: account.name,
       balance: account.balance,
     };
     return data;
   });
-export const MdudesSummay = sorted
+
+const dudes: IRankElem[] = sorted
   .reverse()
   .slice(0, 3)
   .reverse()
-  .map((account) => {
+  .map((account, index) => {
     const data = {
       id: account.id,
+      rank: accounts.length - index,
       name: account.name,
       balance: account.balance,
     };
     return data;
   });
+
+export const MRanksSummary = [...ranker, ...dudes];
+export const MRanks = sorted.reverse().map((account, index) => {
+  const data = {
+    id: account.id,
+    rank: index + 1,
+    name: account.name,
+    balance: account.balance,
+  };
+  return data;
+});
 
 export const MY_ID = 100;
 
