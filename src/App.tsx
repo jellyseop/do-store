@@ -6,6 +6,7 @@ import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResult";
 import Header from "./components/Header";
 import DoMoneyHistory from "./pages/DoMoneyHistory";
+import OrderHistory from "./pages/OrderHistory";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
+        <Route path="/orderHistory" element={<OrderHistory />} />
       </Routes>
     </div>
   );
