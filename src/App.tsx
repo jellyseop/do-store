@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResult";
 import Header from "./components/Header";
+import DoMoneyHistory from "./pages/DoMoneyHistory";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
       </Routes>
     </div>
   );
