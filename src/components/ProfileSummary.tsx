@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ProfileSummary: React.FC = () => {
@@ -22,7 +23,11 @@ const ProfileSummary: React.FC = () => {
         <span className="mx-2">|</span>
         <span className="mr-1">Steve</span> 님
       </div>
-      {/* TODO: Link로 교체 */}
+
+      {/* <Link to="/mypage" className="text-sm text-gray-400">
+        내역보기{" >"}
+      </Link> */}
+
       {location.pathname === "/" && (
         <div onClick={handleOnClick} className="text-sm text-gray-400">
           내역보기{" >"}
