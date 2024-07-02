@@ -7,7 +7,7 @@ const ProfileSummary: React.FC = () => {
 
   const handleOnClick = () => {
     navigate("/mypage");
-  }
+  };
 
   return (
     <div className="flex justify-between items-center bg-gray-100 px-6 py-5">
