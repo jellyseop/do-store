@@ -2,6 +2,7 @@ import React from "react";
 import { formatMoney } from "../util";
 import SectionHeader from "./SectionHeader";
 import { IRankElem } from "../mock";
+import { Link } from "react-router-dom";
 
 const badges = ["top-green", "top-pink", "top-yellow", "dude"];
 const medals = ["gold", "silver", "bronze"];
@@ -63,21 +64,21 @@ interface IRankingList {
 
 const RankingList: React.FC<IRankingList> = ({ isSummary, ranks }) => {
   return (
-    <section className="mb-4 xl:mb-0 p-6 xl:py-12 bg-white xl:bg-gray-100">
-      {/*홈 요약 헤더*/}
+    <section className="mb-4 xl:mb-0 p-6 xl:py-12 xl:px-0 bg-white xl:bg-transparent ">
+      {/*홈 요약*/}
       {isSummary ? (
         <>
-          {/*모바일*/}
+          {/*모바일 헤더*/}
           <div className="xl:hidden">
             <SectionHeader title="Do money 랭킹" linkTo="ranking" />
           </div>
-          {/*웹*/}
+          {/*웹 헤더*/}
           <div className="hidden xl:block w-full max-w-5xl mx-auto mb-6">
             <h2 className=" text-2xl text-center text-gray-800 tracking-widest">
               두머니 랭킹
             </h2>
-            <div id={"linkTo"} className="text-sm text-gray-400 text-end">
-              전체보기{" >"}
+            <div className="text-sm text-gray-400 text-end">
+              <Link to={"/ranking"}>전체보기{" >"}</Link>
             </div>
           </div>
           {/*모바일 요약 랭킹*/}
@@ -117,8 +118,9 @@ const RankingList: React.FC<IRankingList> = ({ isSummary, ranks }) => {
         </>
       ) : (
         /*랭킹 페이지 전체 랭킹*/
+
         <>
-          <ul className="mt-2 xl:hidden">
+          <ul className=" mt-2">
             {ranks.map((ranker) => (
               <RankingChild
                 key={ranker.id}
