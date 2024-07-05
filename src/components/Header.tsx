@@ -8,12 +8,12 @@ const Header: React.FC = () => {
   const { pathname } = useLocation();
 
   return (
-    <header className=" sticky top-0 left-0 pt-8 xl:pt-4 px-6 w-full border-b border-gray-200 bg-white ">
+    <header className=" sticky top-0 left-0 pt-6 xl:pt-4 px-6 w-full border-b border-gray-200 bg-white ">
       {/*웹 프로필*/}
       <div className="hidden w-full max-w-5xl xl:flex xl:mx-auto justify-end">
         <ProfileSummary showLink={true} />
       </div>
-      <div className="w-full max-w-5xl xl:mx-auto flex justify-between items-center mb-6 bg-white">
+      <div className="w-full max-w-5xl xl:mx-auto flex justify-between items-center mb-4 bg-white">
         <Link to="/">
           <img src="/images/logo.svg" alt="Do store" className="h-10 xl:h-12" />
         </Link>

@@ -2,15 +2,15 @@ import React from "react";
 import SectionHeader from "./SectionHeader";
 import { formatMoney } from "../util";
 
-interface Product {
+export interface IProduct {
   id: number;
   name: string;
   price: number;
   imageUrl: string;
 }
-interface ProductProps {
+export interface ProductProps {
   idx: number;
-  product: Product;
+  product: IProduct;
 }
 
 const Product: React.FC<ProductProps> = ({
@@ -83,13 +83,19 @@ const Product: React.FC<ProductProps> = ({
 interface ProductListProps {
   title: string;
   desc: string;
-  products: Product[];
+  products: IProduct[];
 }
 
 const ProductList: React.FC<ProductListProps> = ({ title, desc, products }) => {
   return (
     <section className="p-6 mb-4 xl:mb-0 bg-white">
-      <SectionHeader title={title} desc={desc} linkTo="abc" />
+      <SectionHeader
+        title={title}
+        desc={desc}
+        linkTo={
+          title == "온라인 상품" ? "/products/online" : "/products/offline"
+        }
+      />
       {/*모바일 리스트*/}
       <ul className="xl:hidden mt-2">
         {products.map((product, idx) => (
