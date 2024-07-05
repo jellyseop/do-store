@@ -9,7 +9,7 @@ interface IProfileSummary {
 
 const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
   return (
-    <div className="flex justify-between items-center px-6 py-6 xl:p-0 xl:mb-6 bg-gray-100 xl:bg-white text-gray-700">
+    <div className="flex justify-between items-center px-6 py-5 xl:p-0 xl:mb-6 bg-gray-100 xl:bg-white text-gray-700">
       <div className="text-sm xl:text-xs text-gray-700 flex">
         보유 Do money
         <span className=" ml-3 xl:ml-2 mr-1 text-md">523</span>
@@ -23,13 +23,13 @@ const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
         <img
           src={`/images/badges/top-green.svg`}
           alt="badge"
-          className="w-5 xl:w-4 aspect-square ml-1"
+          className="w-5 xl:w-4 aspect-square ml-1 -mb-0.5"
         />
       </div>
 
       {showLink && (
-        <Link to="/mypage" className="text-sm text-gray-400">
-          내역보기{" >"}
+        <Link to="/mypage" className="text-sm text-gray-400 xl:ml-2">
+          {" >"}
         </Link>
       )}
     </div>
