@@ -6,8 +6,8 @@ const MenuList: React.FC = () => {
   const location = useLocation();
 
   const menuItems = [
-    { label: "Do money 내역", path: "/doMoneyHistory" },
-    { label: "주문 내역", path: "/orderHistory" },
+    { label: "Do money 내역", path: "/doMoney" },
+    { label: "주문 내역", path: "/order" },
     { label: "비밀번호 변경", path: "/changePassword" },
     { label: "로그아웃", path: "/logout" },
   ];

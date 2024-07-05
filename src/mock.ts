@@ -446,3 +446,161 @@ const products: IProduct[] = [
 
 export const ONLINE_PRODUCTS = shuffleProducts(products);
 export const OFFLINE_PRODUCTS = shuffleProducts(products);
+
+export interface IOrder {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  condition: string;
+  amount: number;
+}
+
+function shuffleOrders(array: IOrder[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const orders: IOrder[] = [
+  {
+    id: 1,
+    name: "초콜릿",
+    price: 2300,
+    imageUrl: "/images/choco.jpeg",
+    condition: "주문 취소",
+    amount: 1,
+  },
+  {
+    id: 2,
+    name: "투명케이스",
+    price: 2000,
+    imageUrl: "/images/case.jpeg",
+    condition: "주문 취소",
+    amount: 2,
+  },
+  {
+    id: 3,
+    name: "장난감",
+    price: 2000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 완료",
+    amount: 3,
+  },
+  {
+    id: 4,
+    name: "사탕",
+    price: 2300,
+    imageUrl: "/images/candy.jpeg",
+    condition: "배송 완료",
+    amount: 4,
+  },
+  {
+    id: 5,
+    name: "책",
+    price: 15000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 중",
+    amount: 1,
+  },
+  {
+    id: 6,
+    name: "노트북",
+    price: 1200000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 완료",
+    amount: 1,
+  },
+  {
+    id: 7,
+    name: "헤드폰",
+    price: 25000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 중",
+    amount: 2,
+  },
+  {
+    id: 8,
+    name: "커피머신",
+    price: 70000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 완료",
+    amount: 1,
+  },
+  {
+    id: 9,
+    name: "운동화",
+    price: 80000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "주문 취소",
+    amount: 1,
+  },
+  {
+    id: 10,
+    name: "가방",
+    price: 45000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 중",
+    amount: 1,
+  },
+  {
+    id: 11,
+    name: "모자",
+    price: 15000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 완료",
+    amount: 2,
+  },
+  {
+    id: 12,
+    name: "티셔츠",
+    price: 20000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 완료",
+    amount: 3,
+  },
+  {
+    id: 13,
+    name: "바지",
+    price: 30000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "주문 취소",
+    amount: 1,
+  },
+  {
+    id: 14,
+    name: "시계",
+    price: 50000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 중",
+    amount: 1,
+  },
+  {
+    id: 15,
+    name: "책상",
+    price: 150000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 완료",
+    amount: 1,
+  },
+  {
+    id: 16,
+    name: "의자",
+    price: 80000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "주문 취소",
+    amount: 1,
+  },
+  {
+    id: 17,
+    name: "램프",
+    price: 30000,
+    imageUrl: "/images/toy.jpeg",
+    condition: "배송 중",
+    amount: 2,
+  },
+];
+
+export const ORDER_PRODUCTS = shuffleOrders(orders);

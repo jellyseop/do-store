@@ -1,6 +1,10 @@
 import React from "react";
+<<<<<<< HEAD
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
+=======
+import { Routes, Route, Navigate } from "react-router-dom";
+>>>>>>> develop
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResult";
@@ -8,6 +12,8 @@ import Header from "./components/Header";
 import DoMoneyHistory from "./pages/DoMoneyHistory";
 import OrderHistory from "./pages/OrderHistory";
 import Ranking from "./pages/Ranking";
+import CartPage from "./pages/CartPage";
+import ChangePassword from "./pages/ChangePW";
 import OnlineProducts from "./pages/OnlineProducts";
 import OfflineProducts from "./pages/OfflineProducts";
 import NotFound from "./pages/NotFound";
@@ -16,6 +22,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import { AuthProvider } from "./AuthProvider";
+
 
 const App: React.FC = () => {
   return (
@@ -41,6 +48,8 @@ const App: React.FC = () => {
             <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
             <Route path="/orderHistory" element={<OrderHistory />} />
             <Route path="/ranking" element={<Ranking />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/products/online" element={<OnlineProducts />} />
             <Route path="/products/offline" element={<OfflineProducts />} />
             <Route
@@ -52,7 +61,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
-  );
+      );
 };
 
 export default App;

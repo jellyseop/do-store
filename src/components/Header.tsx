@@ -21,12 +21,13 @@ const Header: React.FC = () => {
         <div className="hidden xl:block xl:w-full xl:max-w-lg xl:mr-20">
           <SearchBar />
         </div>
-
-        <img
-          src="/images/cart-icon.svg"
-          alt="Cart"
-          className="w-7 aspect-square"
-        />
+        <Link to="/cart" className="block xl:hidden">
+          <img
+            src="/images/cart-icon.svg"
+            alt="Cart"
+            className="w-7 aspect-square"
+          />
+        </Link>
       </div>
       {/*모바일 검색*/}
       {pathname == "/" && (
