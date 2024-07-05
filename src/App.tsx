@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage";
@@ -13,31 +13,45 @@ import OfflineProducts from "./pages/OfflineProducts";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import PrivateRoute from "./PrivateRoute";
+import Login from "./pages/Login";
+import { AuthProvider } from "./AuthProvider";
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen w-full relative">
+    <AuthProvider>
       <ScrollToTop />
-      <Header />
-      <main className="flex-grow min-h-screen">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/search" element={<SearchResults />} />
-          <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
-          <Route path="/orderHistory" element={<OrderHistory />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/products/online" element={<OnlineProducts />} />
-          <Route path="/products/offline" element={<OfflineProducts />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route element={<PrivateRoute />}>
           <Route
-            path="/products"
-            element={<Navigate to="/products/offline" />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+            element={
+              <div className="flex flex-col min-h-screen w-full relative">
+                <Header />
+                <main className="flex-grow min-h-screen">
+                  <Outlet />
+                </main>
+                <Footer />
+              </div>
+            }
+          >
+            <Route path="/" element={<Home />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
+            <Route path="/orderHistory" element={<OrderHistory />} />
+            <Route path="/ranking" element={<Ranking />} />
+            <Route path="/products/online" element={<OnlineProducts />} />
+            <Route path="/products/offline" element={<OfflineProducts />} />
+            <Route
+              path="/products"
+              element={<Navigate to="/products/offline" />}
+            />
+          </Route>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 };
 
