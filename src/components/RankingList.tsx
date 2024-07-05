@@ -74,8 +74,8 @@ const RankingList: React.FC<IRankingList> = ({ isSummary, ranks }) => {
           </div>
           {/*웹 헤더*/}
           <div className="hidden xl:block w-full max-w-5xl mx-auto mb-6">
-            <h2 className=" text-2xl text-center text-gray-800 tracking-widest">
-              두머니 랭킹
+            <h2 className=" text-2xl text-center text-gray-800 tracking-wide">
+              Do money 랭킹
             </h2>
             <div className="text-sm text-gray-400 text-end">
               <Link to={"/ranking"}>전체보기{" >"}</Link>
