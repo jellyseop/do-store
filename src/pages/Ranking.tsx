@@ -5,12 +5,13 @@ import RankingList from "../components/RankingList";
 import { IRankElem, MRanks, accounts } from "../mock";
 import Pagination from "../components/Pagination";
 import { delay } from "../util";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const fetchData = async (page: number): Promise<IRankElem[]> => {
-  await delay(300);
+  await delay(1000);
   const data = MRanks;
-  const start = 7 * (page - 1);
-  return data.slice(start, start + 7);
+  const start = 6 * (page - 1);
+  return data.slice(start, start + 6);
 };
 
 const useQuery = () => {
@@ -29,6 +30,7 @@ const Ranking: React.FC = () => {
   useEffect(() => {
     const initialPage = Number(query.get("page")) || 1;
     setPage(initialPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update URL query parameters
@@ -56,9 +58,15 @@ const Ranking: React.FC = () => {
 
   return (
     <>
-      <PageHeader title="Do money 랭킹" />
-
-      <div className="w-full flex justify-between items-center px-6 text-gray-400">
+      {/*랭킹 페이지 모바일 헤더 */}
+      <div className="xl:hidden">
+        <PageHeader title="Do money 랭킹" />
+      </div>
+      {/*랭킹 페이지 웹 헤더 */}
+      <div className="hidden xl:flex justify-start w-full max-w-5xl mx-auto mt-6">
+        <h1 className="text-xl tracking-wide text-gray-800">Do money 랭킹</h1>
+      </div>
+      <div className="w-full xl:max-w-5xl xl:mx-auto flex justify-between items-center px-6 xl:px-0 text-gray-400">
         <div>
           나의 랭킹:&nbsp;
           <span>18</span>등
@@ -69,16 +77,22 @@ const Ranking: React.FC = () => {
       </div>
 
       {data ? (
-        <RankingList isSummary={false} ranks={data} total={accounts.length} />
+        <>
+          <div className="xl:max-w-5xl xl:mx-auto w-full">
+            <RankingList isSummary={false} ranks={data} />
+            <div className="w-full px-6  xl:px-0">
+              <Pagination
+                handlePageChange={handlePageChange}
+                totalPages={Math.ceil(accounts.length / 6)}
+              />
+            </div>
+          </div>
+        </>
       ) : (
-        <div>Loading...</div>
+        <div className="w-full flex justify-center mt-36 xl:mt-44 ">
+          <LoadingSpinner />
+        </div>
       )}
-      <div className="w-full flex justify-center mt-8">
-        <Pagination
-          handlePageChange={handlePageChange}
-          totalPages={accounts.length / 7 + 1}
-        />
-      </div>
     </>
   );
 };
