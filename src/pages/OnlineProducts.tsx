@@ -1,26 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
-import PageHeader from "../components/mobile/PageHeader";
 import { useLocation, useNavigate } from "react-router-dom";
-import RankingList from "../components/RankingList";
-import { IRankElem, MRanks, accounts } from "../mock";
-import Pagination from "../components/Pagination";
+import Product from "../components/Product";
+import PageHeader from "../components/mobile/PageHeader";
+import { OFFLINE_PRODUCTS } from "../mock";
+import { useCallback, useEffect, useState } from "react";
 import { delay } from "../util";
+import { IProduct } from "../components/ProductList";
 import LoadingSpinner from "../components/LoadingSpinner";
+import Pagination from "../components/Pagination";
 
-const fetchData = async (page: number): Promise<IRankElem[]> => {
+const fetchData = async (page: number): Promise<IProduct[]> => {
   await delay(1000);
-  const data = MRanks;
-  const start = 7 * (page - 1);
-  return data.slice(start, start + 7);
+  const data = OFFLINE_PRODUCTS;
+  const start = 4 * (page - 1);
+  return data.slice(start, start + 4);
 };
 
-//fetch ranking data before rendering
-const Ranking: React.FC = () => {
+const OnlineProducts = () => {
   const navigate = useNavigate();
   const query = new URLSearchParams(useLocation().search);
 
   const [page, setPage] = useState<number>(1);
-  const [data, setData] = useState<IRankElem[] | null>(null);
+  const [data, setData] = useState<IProduct[] | null>(null);
 
   // Initialize state from URL query parameters
   useEffect(() => {
@@ -53,30 +53,26 @@ const Ranking: React.FC = () => {
   );
 
   return (
-    <>
-      {/*페이지 헤더 */}
-      <PageHeader title="Do money 랭킹" />
+    <div className="xl:max-w-5xl xl:mx-auto w-full">
+      {/*전체 온라인 상품 페이지 헤더 */}
 
-      <div className="w-full xl:max-w-5xl xl:mx-auto flex justify-between items-center px-6 xl:px-0 text-gray-400">
-        <div>
-          나의 랭킹:&nbsp;
-          <span>18</span>등
-        </div>
-        <div className="text-sm">
-          최근 업데이트 <span>2024-04-13</span>
-        </div>
-      </div>
+      <PageHeader title="전체 온라인 상품" />
 
+      <p className="px-6 xl:px-0 text-gray-400 -mt-3 mb-8 xl:mt-5 xl:mb-12">
+        총 7건
+      </p>
       {data ? (
         <>
-          <div className="xl:max-w-5xl xl:mx-auto w-full">
-            <RankingList isSummary={false} ranks={data} />
-            <div className="w-full px-6  xl:px-0">
-              <Pagination
-                handlePageChange={handlePageChange}
-                totalPages={Math.ceil(accounts.length / 7)}
-              />
-            </div>
+          <div className="px-6 xl:px-0 grid grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-8">
+            {OFFLINE_PRODUCTS.map((product, idx) => (
+              <Product idx={idx} product={product} />
+            ))}
+          </div>
+          <div className="w-full px-6 xl:px-0 mt-12 xl:mt-24">
+            <Pagination
+              handlePageChange={handlePageChange}
+              totalPages={Math.ceil(OFFLINE_PRODUCTS.length / 4)}
+            />
           </div>
         </>
       ) : (
@@ -84,8 +80,8 @@ const Ranking: React.FC = () => {
           <LoadingSpinner />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
-export default Ranking;
+export default OnlineProducts;
