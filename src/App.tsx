@@ -10,12 +10,14 @@ import OrderHistory from "./pages/OrderHistory";
 import Ranking from "./pages/Ranking";
 import OnlineProducts from "./pages/OnlineProducts";
 import OfflineProducts from "./pages/OfflineProducts";
-import NotFound from "./pages/Notfound";
+import NotFound from "./pages/NotFound";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen w-full relative">
+      <ScrollToTop />
       <Header />
       <main className="flex-grow min-h-screen">
         <Routes>
