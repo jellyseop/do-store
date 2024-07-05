@@ -1,10 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-
-=======
-import { Routes, Route, Navigate } from "react-router-dom";
->>>>>>> develop
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResult";
@@ -22,7 +17,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import { AuthProvider } from "./AuthProvider";
-
 
 const App: React.FC = () => {
   return (
@@ -61,7 +55,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
-      );
+  );
 };
 
 export default App;
