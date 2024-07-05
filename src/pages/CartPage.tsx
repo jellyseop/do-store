@@ -3,7 +3,7 @@ import ProfileSummary from "../components/ProfileSummary";
 import MenuList from "../components/MenuList";
 import MyPageLayout from "../components/MyPageLayout";
 
-const MyPage: React.FC = () => {
+const CartPage: React.FC = () => {
   return (
     <div className="min-h-screen">
       <main className="p-6 xl:container xl:mx-auto">
@@ -11,6 +11,7 @@ const MyPage: React.FC = () => {
         <div className="block xl:hidden">
           <ProfileSummary showLink={false} />
           <MenuList />
+          <div>cartPage</div>
         </div>
 
         {/* xl 이상일 때 보이는 내용 */}
@@ -22,4 +23,4 @@ const MyPage: React.FC = () => {
   );
 };
 
-export default MyPage;
+export default CartPage;
