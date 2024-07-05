@@ -21,7 +21,7 @@ const Header: React.FC = () => {
         <div className="hidden xl:block xl:w-full xl:max-w-lg xl:mr-20">
           <SearchBar />
         </div>
-        <Link to="/cart" className="block xl:hidden">
+        <Link to="/cart" className="block">
           <img
             src="/images/cart-icon.svg"
             alt="Cart"

@@ -25,7 +25,7 @@ const MyPageLayout: React.FC<MyPageLayoutProps> = ({
           <h2 className="text-xl text-gray-700 font-normal mr-4">{title}</h2>
           <p className="text-gray-400 text-sm">{subtitle}</p>
         </div>
-        <div className="border-t border-gray-300 mt-4 pt-4">{children}</div>
+        <div className="border-t border-gray-300 mt-4 pt-3">{children}</div>
       </div>
     </div>
   );

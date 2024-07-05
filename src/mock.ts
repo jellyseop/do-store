@@ -604,3 +604,34 @@ const orders: IOrder[] = [
 ];
 
 export const ORDER_PRODUCTS = shuffleOrders(orders);
+
+export interface ITransaction {
+  id: number;
+  type: string;
+  date: string;
+  teacher: string;
+  amount: number;
+}
+
+function shuffleTransactions(array: ITransaction[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const transactions: ITransaction[] = [
+  { id: 1, type: "+", date: "2024.04.14", teacher: "steve", amount: 100 },
+  { id: 2, type: "-", date: "2024.04.14", teacher: "steve", amount: 100 },
+  { id: 3, type: "+", date: "2024.04.14", teacher: "john", amount: 150 },
+  { id: 4, type: "+", date: "2024.04.15", teacher: "john", amount: 200 },
+  { id: 5, type: "-", date: "2024.04.15", teacher: "mike", amount: 300 },
+  { id: 6, type: "+", date: "2024.04.16", teacher: "mike", amount: 400 },
+  { id: 7, type: "-", date: "2024.04.16", teacher: "anna", amount: 250 },
+  { id: 8, type: "+", date: "2024.04.17", teacher: "anna", amount: 350 },
+  { id: 9, type: "+", date: "2024.04.18", teacher: "emma", amount: 450 },
+  { id: 10, type: "-", date: "2024.04.18", teacher: "emma", amount: 500 },
+];
+
+export const SHUFFLED_TRANSACTIONS = shuffleTransactions(transactions);

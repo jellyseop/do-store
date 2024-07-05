@@ -9,7 +9,7 @@ const MenuList: React.FC = () => {
     { label: "Do money 내역", path: "/doMoney" },
     { label: "주문 내역", path: "/order" },
     { label: "비밀번호 변경", path: "/changePassword" },
-    { label: "로그아웃", path: "/logout" },
+    { label: "로그아웃", path: "/" }, // 로그아웃 기능 추가 필요
   ];
 
   return (

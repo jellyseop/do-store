@@ -5,9 +5,10 @@ import { delay } from "../util";
 import Pagination from "../components/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import OrderList from "../components/OrderList";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const fetchData = async (page: number): Promise<IOrder[]> => {
-  await delay(300);
+  await delay(1000);
   const data = ORDER_PRODUCTS;
   const start = 5 * (page - 1);
   return data.slice(start, start + 5);
@@ -59,7 +60,13 @@ const OrderHistory: React.FC = () => {
               최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요
             </p>
             <section className="xl:mb-0 bg-white">
-              {data ? <OrderList orders={data} /> : <div>Loading...</div>}
+              {data ? (
+                <OrderList orders={data} />
+              ) : (
+                <div className="w-full mt-32">
+                  <LoadingSpinner />
+                </div>
+              )}
               <div className="w-full flex justify-center mt-6">
                 <Pagination
                   totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
@@ -76,17 +83,21 @@ const OrderHistory: React.FC = () => {
             title="주문 내역"
             subtitle="최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요"
           >
-            <p className="text-gray-400 flex items-center justify-center">
-              <section className="xl:mb-0 bg-white xl:w-full">
-                {data ? <OrderList orders={data} /> : <div>Loading...</div>}
-                <div className="flex justify-center mt-4">
-                  <Pagination
-                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                    handlePageChange={handlePageChange}
-                  />
+            <section className="xl:mb-0 bg-white xl:w-full">
+              {data ? (
+                <OrderList orders={data} />
+              ) : (
+                <div className="w-full mt-32">
+                  <LoadingSpinner />
                 </div>
-              </section>
-            </p>
+              )}
+              <div className="flex justify-center mt-4">
+                <Pagination
+                  totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+                  handlePageChange={handlePageChange}
+                />
+              </div>
+            </section>
           </MyPageLayout>
         </div>
       </main>
