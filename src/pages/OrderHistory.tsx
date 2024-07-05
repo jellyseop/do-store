@@ -1,55 +1,93 @@
-import React from "react";
-import WebPageTemplate from "../components/WebPageTemplate";
-import ProductList from "../components/ProductList";
+import React, { useCallback, useEffect, useState } from "react";
+import MyPageLayout from "../components/MyPageLayout";
+import { IOrder, ORDER_PRODUCTS } from "../mock";
+import { delay } from "../util";
+import Pagination from "../components/Pagination";
+import { useLocation, useNavigate } from "react-router-dom";
+import OrderList from "../components/OrderList";
+
+const fetchData = async (page: number): Promise<IOrder[]> => {
+  await delay(300);
+  const data = ORDER_PRODUCTS;
+  const start = 5 * (page - 1);
+  return data.slice(start, start + 5);
+};
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const OrderHistory: React.FC = () => {
-  const orderProducts = [
-    { id: 1, name: "감자", price: 2300, imageUrl: "/images/choco.jpeg" },
-    {
-      id: 2,
-      name: "콩나물",
-      price: 2000,
-      imageUrl: "/images/case.jpeg",
-    },
-    {
-      id: 3,
-      name: "콩나물",
-      price: 2000,
-      imageUrl: "/images/toy.jpeg",
-    },
-    { id: 4, name: "감자", price: 2300, imageUrl: "/images/candy.jpeg" },
-  ];
+  const navigate = useNavigate();
+  const query = useQuery();
+
+  const [page, setPage] = useState<number>(1);
+  const [data, setData] = useState<IOrder[] | null>(null);
+
+  useEffect(() => {
+    const initialPage = Number(query.get("page")) || 1;
+    setPage(initialPage);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("page", page.toString());
+    navigate({ search: params.toString() }, { replace: true });
+  }, [page, navigate]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const fetchedData = await fetchData(page);
+      setData(fetchedData);
+    };
+    loadData();
+  }, [page]);
+
+  const handlePageChange = useCallback(
+    (newPage: number) => setPage(newPage),
+    []
+  );
 
   return (
     <div className="">
       <main className="p-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
-          <div className="min-h-scree">
-            <main className="bg-white">
-              <h2 className="text-gray-800 text-xl mb-1">주문 내역</h2>
-              <p className="text-gray-400 text-xs mb-6">
-                최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요
-              </p>
-              <ProductList title="" desc={""} products={orderProducts} />
-              <table className="w-full text-center">
-                <thead></thead>
-                <tbody></tbody>
-              </table>
-            </main>
-          </div>
+          <main className="bg-white">
+            <h2 className="text-gray-800 text-xl mb-1">주문 내역</h2>
+            <p className="text-gray-400 text-xs mb-6">
+              최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요
+            </p>
+            <section className="xl:mb-0 bg-white">
+              {data ? <OrderList orders={data} /> : <div>Loading...</div>}
+              <div className="w-full flex justify-center mt-6">
+                <Pagination
+                  totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+                  handlePageChange={handlePageChange}
+                />
+              </div>
+            </section>
+          </main>
         </div>
 
         {/* xl 이상일 때 보이는 내용 */}
         <div className="hidden xl:flex">
-          <WebPageTemplate
-            title="Do Money 내역"
-            subtitle="최근 수령한 Do Money 순으로 내역을 볼 수 있어요"
+          <MyPageLayout
+            title="주문 내역"
+            subtitle="최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요"
           >
             <p className="text-gray-400 flex items-center justify-center">
-              최근 Do Money 내역이 없습니다
+              <section className="xl:mb-0 bg-white xl:w-full">
+                {data ? <OrderList orders={data} /> : <div>Loading...</div>}
+                <div className="flex justify-center mt-4">
+                  <Pagination
+                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+                    handlePageChange={handlePageChange}
+                  />
+                </div>
+              </section>
             </p>
-          </WebPageTemplate>
+          </MyPageLayout>
         </div>
       </main>
     </div>

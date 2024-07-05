@@ -1,19 +1,19 @@
 import React from "react";
 import MenuList from "./MenuList";
 
-interface PageTemplateProps {
+interface MyPageLayoutProps {
   title: string;
   subtitle: string;
   children?: React.ReactNode;
 }
 
-const WebPageTemplate: React.FC<PageTemplateProps> = ({
+const MyPageLayout: React.FC<MyPageLayoutProps> = ({
   title,
   subtitle,
   children,
 }) => {
   return (
-    <div className="flex flex-col xl:flex-row w-full xl:space-x-8  xl:mt-8">
+    <div className="flex flex-col xl:flex-row w-full xl:space-x-8 xl:mt-8 xl:max-w-5xl xl:mx-auto">
       <div className="w-full xl:w-1/4 xl:pr-8">
         <h1 className="text-2xl text-gray-800 font-semibold mb-8">
           마이페이지
@@ -31,4 +31,4 @@ const WebPageTemplate: React.FC<PageTemplateProps> = ({
   );
 };
 
-export default WebPageTemplate;
+export default MyPageLayout;
