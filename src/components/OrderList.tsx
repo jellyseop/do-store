@@ -58,7 +58,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders }) => {
             <div className="flex flex-1 justify-between items-center">
               <div className="flex flex-col">
                 <h3 className="text-lg text-gray-800">{order.name}</h3>
-                <div className="flex items-center text-sm text-gray-800">
+                <div className="flex items-center text-base text-gray-800">
                   {formatMoney(order.price)}
                   <img
                     src="/images/do-money.svg"

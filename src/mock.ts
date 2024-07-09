@@ -635,3 +635,59 @@ const transactions: ITransaction[] = [
 ];
 
 export const SHUFFLED_TRANSACTIONS = shuffleTransactions(transactions);
+
+export interface ICartItem {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+}
+
+function shuffleCartItems(array: ICartItem[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const cartItems: ICartItem[] = [
+  {
+    id: 1,
+    name: "초콜릿",
+    price: 2300,
+    imageUrl: "/images/choco.jpeg",
+    quantity: 1,
+  },
+  {
+    id: 2,
+    name: "투명케이스",
+    price: 2000,
+    imageUrl: "/images/case.jpeg",
+    quantity: 2,
+  },
+  {
+    id: 3,
+    name: "장난감",
+    price: 2000,
+    imageUrl: "/images/toy.jpeg",
+    quantity: 3,
+  },
+  {
+    id: 4,
+    name: "사탕",
+    price: 2300,
+    imageUrl: "/images/candy.jpeg",
+    quantity: 4,
+  },
+  {
+    id: 5,
+    name: "책",
+    price: 15000,
+    imageUrl: "/images/choco.jpeg",
+    quantity: 1,
+  },
+];
+
+export const CART_ITEMS = shuffleCartItems(cartItems);

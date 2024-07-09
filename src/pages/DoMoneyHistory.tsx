@@ -72,16 +72,18 @@ const DoMoneyHistory: React.FC = () => {
                 {data ? (
                   <DoMoneyList transactions={data} />
                 ) : (
-                  <div className="w-full mt-32">
+                  <div className="w-full flex justify-center mt-36">
                     <LoadingSpinner />
                   </div>
                 )}
-                <div className="w-full flex justify-center mt-6">
-                  <Pagination
-                    totalPages={Math.ceil(SHUFFLED_TRANSACTIONS.length / 5)}
-                    handlePageChange={handlePageChange}
-                  />
-                </div>
+                {data && (
+                  <div className="w-full flex justify-center mt-6">
+                    <Pagination
+                      totalPages={Math.ceil(SHUFFLED_TRANSACTIONS.length / 7)}
+                      handlePageChange={handlePageChange}
+                    />
+                  </div>
+                )}
               </section>
             </main>
           </div>
@@ -97,20 +99,19 @@ const DoMoneyHistory: React.FC = () => {
               {data ? (
                 <DoMoneyList transactions={data} />
               ) : (
-                <div className="w-full mt-32">
+                <div className="w-full flex justify-center mt-36">
                   <LoadingSpinner />
                 </div>
               )}
-              <div className="flex justify-center mt-4">
-                <Pagination
-                  totalPages={Math.ceil(SHUFFLED_TRANSACTIONS.length / 7)}
-                  handlePageChange={handlePageChange}
-                />
-              </div>
+              {data && (
+                <div className="flex justify-center mt-4">
+                  <Pagination
+                    totalPages={Math.ceil(SHUFFLED_TRANSACTIONS.length / 7)}
+                    handlePageChange={handlePageChange}
+                  />
+                </div>
+              )}
             </section>
-            {/* <p className="text-gray-400 flex items-center justify-center">
-              최근 Do Money 내역이 없습니다
-            </p> */}
           </MyPageLayout>
         </div>
       </main>

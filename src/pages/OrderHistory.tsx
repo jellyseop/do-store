@@ -63,16 +63,18 @@ const OrderHistory: React.FC = () => {
               {data ? (
                 <OrderList orders={data} />
               ) : (
-                <div className="w-full mt-32">
+                <div className="w-full flex justify-center mt-36">
                   <LoadingSpinner />
                 </div>
               )}
-              <div className="w-full flex justify-center mt-6">
-                <Pagination
-                  totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                  handlePageChange={handlePageChange}
-                />
-              </div>
+              {data && (
+                <div className="w-full flex justify-center mt-6">
+                  <Pagination
+                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+                    handlePageChange={handlePageChange}
+                  />
+                </div>
+              )}
             </section>
           </main>
         </div>
@@ -87,16 +89,18 @@ const OrderHistory: React.FC = () => {
               {data ? (
                 <OrderList orders={data} />
               ) : (
-                <div className="w-full mt-32">
+                <div className="w-full flex justify-center mt-36">
                   <LoadingSpinner />
                 </div>
               )}
-              <div className="flex justify-center mt-4">
-                <Pagination
-                  totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                  handlePageChange={handlePageChange}
-                />
-              </div>
+              {data && (
+                <div className="flex justify-center mt-4">
+                  <Pagination
+                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+                    handlePageChange={handlePageChange}
+                  />
+                </div>
+              )}
             </section>
           </MyPageLayout>
         </div>
