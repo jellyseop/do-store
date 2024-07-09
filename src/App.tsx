@@ -1,10 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
-
-=======
-import { Routes, Route, Navigate } from "react-router-dom";
->>>>>>> develop
 import Home from "./pages/Home";
 import MyPage from "./pages/MyPage";
 import SearchResults from "./pages/SearchResult";
@@ -22,7 +17,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import { AuthProvider } from "./AuthProvider";
-
 
 const App: React.FC = () => {
   return (
@@ -45,8 +39,8 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/search" element={<SearchResults />} />
-            <Route path="/doMoneyHistory" element={<DoMoneyHistory />} />
-            <Route path="/orderHistory" element={<OrderHistory />} />
+            <Route path="/doMoney" element={<DoMoneyHistory />} />
+            <Route path="/order" element={<OrderHistory />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/changePassword" element={<ChangePassword />} />
@@ -61,7 +55,7 @@ const App: React.FC = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AuthProvider>
-      );
+  );
 };
 
 export default App;

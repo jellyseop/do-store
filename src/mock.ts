@@ -604,3 +604,90 @@ const orders: IOrder[] = [
 ];
 
 export const ORDER_PRODUCTS = shuffleOrders(orders);
+
+export interface ITransaction {
+  id: number;
+  type: string;
+  date: string;
+  teacher: string;
+  amount: number;
+}
+
+function shuffleTransactions(array: ITransaction[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const transactions: ITransaction[] = [
+  { id: 1, type: "+", date: "2024.04.14", teacher: "steve", amount: 100 },
+  { id: 2, type: "-", date: "2024.04.14", teacher: "steve", amount: 100 },
+  { id: 3, type: "+", date: "2024.04.14", teacher: "john", amount: 150 },
+  { id: 4, type: "+", date: "2024.04.15", teacher: "john", amount: 200 },
+  { id: 5, type: "-", date: "2024.04.15", teacher: "mike", amount: 300 },
+  { id: 6, type: "+", date: "2024.04.16", teacher: "mike", amount: 400 },
+  { id: 7, type: "-", date: "2024.04.16", teacher: "anna", amount: 250 },
+  { id: 8, type: "+", date: "2024.04.17", teacher: "anna", amount: 350 },
+  { id: 9, type: "+", date: "2024.04.18", teacher: "emma", amount: 450 },
+  { id: 10, type: "-", date: "2024.04.18", teacher: "emma", amount: 500 },
+];
+
+export const SHUFFLED_TRANSACTIONS = shuffleTransactions(transactions);
+
+export interface ICartItem {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+}
+
+function shuffleCartItems(array: ICartItem[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+const cartItems: ICartItem[] = [
+  {
+    id: 1,
+    name: "초콜릿",
+    price: 2300,
+    imageUrl: "/images/choco.jpeg",
+    quantity: 1,
+  },
+  {
+    id: 2,
+    name: "투명케이스",
+    price: 2000,
+    imageUrl: "/images/case.jpeg",
+    quantity: 2,
+  },
+  {
+    id: 3,
+    name: "장난감",
+    price: 2000,
+    imageUrl: "/images/toy.jpeg",
+    quantity: 3,
+  },
+  {
+    id: 4,
+    name: "사탕",
+    price: 2300,
+    imageUrl: "/images/candy.jpeg",
+    quantity: 4,
+  },
+  {
+    id: 5,
+    name: "책",
+    price: 15000,
+    imageUrl: "/images/choco.jpeg",
+    quantity: 1,
+  },
+];
+
+export const CART_ITEMS = shuffleCartItems(cartItems);

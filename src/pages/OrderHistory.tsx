@@ -5,9 +5,10 @@ import { delay } from "../util";
 import Pagination from "../components/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import OrderList from "../components/OrderList";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const fetchData = async (page: number): Promise<IOrder[]> => {
-  await delay(300);
+  await delay(1000);
   const data = ORDER_PRODUCTS;
   const start = 5 * (page - 1);
   return data.slice(start, start + 5);
@@ -48,26 +49,40 @@ const OrderHistory: React.FC = () => {
     []
   );
 
+  const renderContent = () => {
+    if (!data) {
+      return (
+        <div className="w-full flex justify-center mt-36">
+          <LoadingSpinner />
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <OrderList orders={data} />
+        <div className="w-full flex justify-center mt-6">
+          <Pagination
+            totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+            handlePageChange={handlePageChange}
+          />
+        </div>
+      </>
+    );
+  };
+
   return (
-    <div className="">
-      <main className="p-6 xl:container xl:mx-auto">
+    <div className="min-h-scree">
+      <div className="p-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
-          <main className="bg-white">
+          <div className="bg-white">
             <h2 className="text-gray-800 text-xl mb-1">주문 내역</h2>
             <p className="text-gray-400 text-xs mb-6">
               최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요
             </p>
-            <section className="xl:mb-0 bg-white">
-              {data ? <OrderList orders={data} /> : <div>Loading...</div>}
-              <div className="w-full flex justify-center mt-6">
-                <Pagination
-                  totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                  handlePageChange={handlePageChange}
-                />
-              </div>
-            </section>
-          </main>
+            <section className="xl:mb-0 bg-white">{renderContent()}</section>
+          </div>
         </div>
 
         {/* xl 이상일 때 보이는 내용 */}
@@ -76,20 +91,12 @@ const OrderHistory: React.FC = () => {
             title="주문 내역"
             subtitle="최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요"
           >
-            <p className="text-gray-400 flex items-center justify-center">
-              <section className="xl:mb-0 bg-white xl:w-full">
-                {data ? <OrderList orders={data} /> : <div>Loading...</div>}
-                <div className="flex justify-center mt-4">
-                  <Pagination
-                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                    handlePageChange={handlePageChange}
-                  />
-                </div>
-              </section>
-            </p>
+            <section className="xl:mb-0 bg-white xl:w-full">
+              {renderContent()}
+            </section>
           </MyPageLayout>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

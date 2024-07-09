@@ -6,7 +6,7 @@ import MyPageLayout from "../components/MyPageLayout";
 const MyPage: React.FC = () => {
   return (
     <div className="min-h-screen">
-      <main className="p-6 xl:container xl:mx-auto">
+      <div className="p-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
           <ProfileSummary showLink={false} />
@@ -17,7 +17,7 @@ const MyPage: React.FC = () => {
         <div className="hidden xl:flex">
           <MyPageLayout title="마이페이지" subtitle=""></MyPageLayout>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
