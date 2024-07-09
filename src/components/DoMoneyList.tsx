@@ -13,6 +13,14 @@ interface DoMoneyListProps {
 }
 
 const DoMoneyList: React.FC<DoMoneyListProps> = ({ transactions }) => {
+  if (transactions.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p className="text-gray-800 text-lg">최근 Do Money 내역이 없습니다</p>
+      </div>
+    );
+  }
+
   return (
     <table className="w-full text-center">
       <thead>

@@ -49,34 +49,40 @@ const OrderHistory: React.FC = () => {
     []
   );
 
+  const renderContent = () => {
+    if (!data) {
+      return (
+        <div className="w-full flex justify-center mt-36">
+          <LoadingSpinner />
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <OrderList orders={data} />
+        <div className="w-full flex justify-center mt-6">
+          <Pagination
+            totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+            handlePageChange={handlePageChange}
+          />
+        </div>
+      </>
+    );
+  };
+
   return (
-    <div className="">
-      <main className="p-6 xl:container xl:mx-auto">
+    <div className="min-h-scree">
+      <div className="p-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
-          <main className="bg-white">
+          <div className="bg-white">
             <h2 className="text-gray-800 text-xl mb-1">주문 내역</h2>
             <p className="text-gray-400 text-xs mb-6">
               최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요
             </p>
-            <section className="xl:mb-0 bg-white">
-              {data ? (
-                <OrderList orders={data} />
-              ) : (
-                <div className="w-full flex justify-center mt-36">
-                  <LoadingSpinner />
-                </div>
-              )}
-              {data && (
-                <div className="w-full flex justify-center mt-6">
-                  <Pagination
-                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                    handlePageChange={handlePageChange}
-                  />
-                </div>
-              )}
-            </section>
-          </main>
+            <section className="xl:mb-0 bg-white">{renderContent()}</section>
+          </div>
         </div>
 
         {/* xl 이상일 때 보이는 내용 */}
@@ -86,25 +92,11 @@ const OrderHistory: React.FC = () => {
             subtitle="최근 주문한 상품 순으로 상품 주문 내역을 볼 수 있어요"
           >
             <section className="xl:mb-0 bg-white xl:w-full">
-              {data ? (
-                <OrderList orders={data} />
-              ) : (
-                <div className="w-full flex justify-center mt-36">
-                  <LoadingSpinner />
-                </div>
-              )}
-              {data && (
-                <div className="flex justify-center mt-4">
-                  <Pagination
-                    totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
-                    handlePageChange={handlePageChange}
-                  />
-                </div>
-              )}
+              {renderContent()}
             </section>
           </MyPageLayout>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

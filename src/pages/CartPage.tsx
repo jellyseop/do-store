@@ -19,25 +19,25 @@ const CartPage: React.FC = () => {
 
   return (
     <div className="">
-      <main className="p-6 xl:container xl:mx-auto">
+      <div className="p-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
-          <main className="bg-white">
-            <header className="text-gray-800 text-xl mb-4">장바구니</header>
+          <div className="bg-white">
+            <h2 className="text-gray-800 text-xl mb-4">장바구니</h2>
             <CartList
               items={items}
               onQuantityChange={handleQuantityChange}
               onRemoveItem={handleRemoveItem}
             />
-          </main>
+          </div>
         </div>
 
         {/* xl 이상일 때 보이는 내용 */}
         <div className="hidden xl:flex">
           <div className="flex flex-col w-full">
-            <header className="flex items-center justify-center text-2xl text-gray-800 font-semibold py-12 mb-6">
+            <h2 className="flex items-center justify-center text-2xl text-gray-800 font-semibold py-12 mb-6">
               장바구니
-            </header>
+            </h2>
             <div className="flex items-center justify-center">
               <CartList
                 items={items}
@@ -47,7 +47,7 @@ const CartPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
