@@ -1,23 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IProduct } from "../components/ProductList";
-import { delay } from "../util";
-import { OFFLINE_PRODUCTS } from "../mock";
-
-const fetchData = async (
-  productType: number,
-  page: number,
-  productOrder?: number
-): Promise<IProduct[]> => {
-  console.log("productType: " + productType);
-  console.log("page: " + page);
-  console.log("productOrder: " + productOrder);
-
-  await delay(1000);
-  const data = OFFLINE_PRODUCTS; // Replace with your actual data source
-  const start = 4 * (page - 1);
-  return data.slice(start, start + 4);
-};
+import { IProduct } from "../definitions/ProductTypes";
+import getFirestoreProducts from "../lib/getFirestoreProducts";
 
 const useProductData = (defaultProductType: number | null = null) => {
   const navigate = useNavigate();
@@ -30,9 +14,11 @@ const useProductData = (defaultProductType: number | null = null) => {
       : 0
   );
   const [productOrder, setProductOrder] = useState<number>(
-    Number(query.get("order")) || 0
+    Number(query.get("order")) || 1
   );
   const [data, setData] = useState<IProduct[] | null>(null);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalCounts, setTotalCounts] = useState<number>(0);
 
   // Update URL query parameters
   useEffect(() => {
@@ -46,9 +32,20 @@ const useProductData = (defaultProductType: number | null = null) => {
   // Fetch data when query, type, or page changes
   useEffect(() => {
     const loadData = async () => {
-      const fetchedData = await fetchData(productType, page, productOrder);
-      setData(fetchedData);
+      const result = await getFirestoreProducts({
+        productType,
+        productOrder,
+        currentPage: page,
+      });
+      if (!result.ok) {
+        console.error(result.error);
+        return;
+      }
+      setData(result.data);
+      setTotalPages(result.totalPages);
+      setTotalCounts(result.totalCounts);
     };
+
     loadData();
   }, [page, productOrder, productType]);
 
@@ -67,6 +64,8 @@ const useProductData = (defaultProductType: number | null = null) => {
 
   return {
     data,
+    totalCounts,
+    totalPages,
     page,
     productType,
     productOrder,

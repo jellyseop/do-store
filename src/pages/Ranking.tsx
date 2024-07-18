@@ -2,25 +2,24 @@ import { useCallback, useEffect, useState } from "react";
 import PageHeader from "../components/mobile/PageHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import RankingList from "../components/RankingList";
-import { IRankElem, MRanks, accounts } from "../mock";
 import Pagination from "../components/Pagination";
-import { delay } from "../util";
 import LoadingSpinner from "../components/LoadingSpinner";
-
-const fetchData = async (page: number): Promise<IRankElem[]> => {
-  await delay(1000);
-  const data = MRanks;
-  const start = 7 * (page - 1);
-  return data.slice(start, start + 7);
-};
+import { useRecoilValue } from "recoil";
+import { rankingIdState } from "../atmos";
+import { IRanking } from "../lib/Ranking-service";
 
 //fetch ranking data before rendering
 const Ranking: React.FC = () => {
   const navigate = useNavigate();
   const query = new URLSearchParams(useLocation().search);
 
+  const rankingId = useRecoilValue(rankingIdState);
+  //if rankingId is not provided, redirect to home page
+
+  const { rankings } = useRecoilValue(rankingIdState);
+
   const [page, setPage] = useState<number>(1);
-  const [data, setData] = useState<IRankElem[] | null>(null);
+  const [data, setData] = useState<IRanking[]>(rankings.slice(0, 3));
 
   // Initialize state from URL query parameters
   useEffect(() => {
@@ -35,15 +34,6 @@ const Ranking: React.FC = () => {
     params.set("page", page.toString());
     navigate({ search: params.toString() }, { replace: true });
   }, [page, navigate]);
-
-  // Fetch data when order or page changes
-  useEffect(() => {
-    const loadData = async () => {
-      const fetchedData = await fetchData(page);
-      setData(fetchedData);
-    };
-    loadData();
-  }, [page]);
 
   // Debounced state change handler to avoid excessive fetch calls
 
@@ -63,18 +53,18 @@ const Ranking: React.FC = () => {
           <span>18</span>등
         </div>
         <div className="text-sm">
-          최근 업데이트 <span>2024-04-13</span>
+          최근 업데이트 <span>{rankingId.id}</span>
         </div>
       </div>
 
       {data ? (
         <>
           <div className="xl:max-w-5xl xl:mx-auto w-full">
-            <RankingList isSummary={false} ranks={data} />
+            <RankingList isSummary={false} />
             <div className="w-full px-6  xl:px-0">
               <Pagination
                 handlePageChange={handlePageChange}
-                totalPages={Math.ceil(accounts.length / 7)}
+                totalPages={Math.ceil(rankings.length / 3)}
               />
             </div>
           </div>

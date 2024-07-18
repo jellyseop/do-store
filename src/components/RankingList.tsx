@@ -1,8 +1,9 @@
 import React from "react";
 import { formatMoney } from "../util";
 import SectionHeader from "./SectionHeader";
-import { IRankElem } from "../mock";
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { rankingState } from "../atmos";
 
 const badges = ["top-green", "top-pink", "top-yellow", "dude"];
 const medals = ["gold", "silver", "bronze"];
@@ -55,14 +56,44 @@ const RankingChild: React.FC<IRankingChildProps> = ({
   );
 };
 
-interface IRank extends IRankElem {}
-
 interface IRankingList {
   isSummary: boolean;
-  ranks: IRank[];
 }
 
-const RankingList: React.FC<IRankingList> = ({ isSummary, ranks }) => {
+const RankingList: React.FC<IRankingList> = ({ isSummary }) => {
+  const ranks = useRecoilValue(rankingState);
+
+  const renderRankingChildren = (start: number, end: number) => (
+    <>
+      {ranks.slice(start, end).map((ranker) => (
+        <RankingChild
+          key={ranker.rank}
+          rank={ranker.rank}
+          name={ranker.nameEn}
+          balance={ranker.balance}
+        />
+      ))}
+    </>
+  );
+
+  const reverseRenderRankingChildren = () => {
+    const start = Math.max(0, ranks.length - 3); // 시작 인덱스를 계산
+    const end = ranks.length; // 끝 인덱스는 배열의 길이
+
+    return (
+      <>
+        {ranks.slice(start, end).map((ranker) => (
+          <RankingChild
+            key={ranker.rank}
+            rank={ranker.rank}
+            name={ranker.nameEn}
+            balance={ranker.balance}
+          />
+        ))}
+      </>
+    );
+  };
+
   return (
     <section className="mb-4 xl:mb-0 p-6 xl:py-12 xl:px-0 bg-white xl:bg-transparent ">
       {/*홈 요약*/}
@@ -82,54 +113,18 @@ const RankingList: React.FC<IRankingList> = ({ isSummary, ranks }) => {
             </div>
           </div>
           {/*모바일 요약 랭킹*/}
-          <ul className="mt-2 xl:hidden">
-            {ranks.slice(0, 3).map((ranker) => (
-              <RankingChild
-                key={ranker.id}
-                rank={ranker.rank}
-                name={ranker.name}
-                balance={ranker.balance}
-              />
-            ))}
-          </ul>
+          <ul className="mt-2 xl:hidden">{renderRankingChildren(0, 3)}</ul>
           {/*웹 요약 랭킹*/}
           <ul className="hidden xl:flex w-full gap-x-12 max-w-5xl mx-auto bg-white shadow-md p-8 pb-10">
-            <div className="flex-1">
-              {ranks.slice(0, 3).map((ranker) => (
-                <RankingChild
-                  key={ranker.id}
-                  rank={ranker.rank}
-                  name={ranker.name}
-                  balance={ranker.balance}
-                />
-              ))}
-            </div>
-            <div className="flex-1">
-              {ranks.slice(3, 6).map((ranker) => (
-                <RankingChild
-                  key={ranker.id}
-                  rank={ranker.rank}
-                  name={ranker.name}
-                  balance={ranker.balance}
-                />
-              ))}
-            </div>
+            <div className="flex-1">{renderRankingChildren(0, 3)}</div>
+            <div className="flex-1">{reverseRenderRankingChildren()}</div>
           </ul>
         </>
       ) : (
         /*랭킹 페이지 전체 랭킹*/
 
         <>
-          <ul className=" mt-2">
-            {ranks.map((ranker) => (
-              <RankingChild
-                key={ranker.id}
-                rank={ranker.rank}
-                name={ranker.name}
-                balance={ranker.balance}
-              />
-            ))}
-          </ul>
+          <ul className=" mt-2">{renderRankingChildren(0, 3)}</ul>
         </>
       )}
     </section>

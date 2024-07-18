@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,10 +20,12 @@ const Login: React.FC = () => {
         email + "@do-it.student",
         password
       );
-      setLoading(false);
+
       navigate("/");
     } catch (error) {
       setError("Failed to log in");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,6 +71,7 @@ const Login: React.FC = () => {
         <button
           type="submit"
           className="bg-yellow-300 text-center w-full py-3.5 text-gray-800 tracking-wide"
+          disabled={loading}
         >
           {loading ? "Loading..." : "로그인"}
         </button>

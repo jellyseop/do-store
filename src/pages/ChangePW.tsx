@@ -1,30 +1,54 @@
 import React, { useState } from "react";
 import MyPageLayout from "../components/MyPageLayout";
+import useMe from "../hooks/\buseMe";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
 
 const ChangePassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const { currentUser } = useMe();
 
-  const handlePasswordChange = () => {
-    // 비밀번호 변경 로직
+  const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       alert("새 비밀번호가 일치하지 않습니다.");
       return;
     }
 
-    /*
-    api.changePassword(currentPassword, newPassword)
-      .then(response => {
+    try {
+      if (currentUser) {
+        const credential = EmailAuthProvider.credential(
+          currentUser.email!,
+          currentPassword
+        );
+
+        await reauthenticateWithCredential(currentUser, credential);
+        await updatePassword(currentUser, newPassword);
         alert("비밀번호가 성공적으로 변경되었습니다.");
-      })
-      .catch(error => {
-        alert("비밀번호 변경에 실패했습니다.");
-      });
-    */
+      }
+    } catch (error: any) {
+      console.error(error);
+      alert("비밀번호 변경에 실패했습니다.");
+    } finally {
+      setNewPassword("");
+      setConfirmPassword("");
+      setCurrentPassword("");
+    }
   };
 
   const renderForm = () => (
     <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+      <input
+        type="password"
+        placeholder="현재 비밀번호"
+        className="border-2 w-full p-3"
+        value={currentPassword}
+        onChange={(e) => setCurrentPassword(e.target.value)}
+      />
       <input
         type="password"
         placeholder="새 비밀번호"

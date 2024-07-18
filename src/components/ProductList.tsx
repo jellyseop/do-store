@@ -1,13 +1,8 @@
 import React from "react";
 import SectionHeader from "./SectionHeader";
 import { formatMoney } from "../util";
+import { IProduct } from "../definitions/ProductTypes";
 
-export interface IProduct {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
 export interface ProductProps {
   idx: number;
   product: IProduct;
@@ -15,7 +10,7 @@ export interface ProductProps {
 
 const Product: React.FC<ProductProps> = ({
   idx,
-  product: { id, name, price, imageUrl },
+  product: { id, name, price, img_url },
 }) => {
   return (
     <>
@@ -26,7 +21,7 @@ const Product: React.FC<ProductProps> = ({
       >
         <span className="font-light ml-3">{idx + 1}</span>
         <img
-          src={imageUrl}
+          src={img_url}
           alt={name}
           className=" w-20 aspect-square ml-7 mr-3"
         />
@@ -53,7 +48,7 @@ const Product: React.FC<ProductProps> = ({
         id={id + ""}
         className="hidden w-full xl:flex xl:flex-col items-start hover:border border-gray-200 px-2 py-3"
       >
-        <img src={imageUrl} alt={name} className="w-full aspect-square" />
+        <img src={img_url} alt={name} className="w-full aspect-square" />
         <button className="w-full flex justify-center items-center border border-gray-300 mt-2  py-1 text-gray-600 hover:bg-yellow-300">
           <img
             src={"/images/add-to-cart.svg"}

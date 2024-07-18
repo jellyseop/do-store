@@ -444,9 +444,6 @@ const products: IProduct[] = [
   { id: 4, name: "사탕", price: 2300, imageUrl: "/images/candy.jpeg" },
 ];
 
-export const ONLINE_PRODUCTS = shuffleProducts(products);
-export const OFFLINE_PRODUCTS = shuffleProducts(products);
-
 export interface IOrder {
   id: number;
   name: string;
@@ -501,7 +498,7 @@ const orders: IOrder[] = [
     id: 5,
     name: "책",
     price: 15000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/book.jpeg",
     condition: "배송 중",
     amount: 1,
   },
@@ -509,7 +506,7 @@ const orders: IOrder[] = [
     id: 6,
     name: "노트북",
     price: 1200000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/laptop.jpeg",
     condition: "배송 완료",
     amount: 1,
   },
@@ -517,7 +514,7 @@ const orders: IOrder[] = [
     id: 7,
     name: "헤드폰",
     price: 25000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/headphone.jpeg",
     condition: "배송 중",
     amount: 2,
   },
@@ -525,7 +522,7 @@ const orders: IOrder[] = [
     id: 8,
     name: "커피머신",
     price: 70000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/coffeemachine.jpeg",
     condition: "배송 완료",
     amount: 1,
   },
@@ -533,7 +530,7 @@ const orders: IOrder[] = [
     id: 9,
     name: "운동화",
     price: 80000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/shoes.jpeg",
     condition: "주문 취소",
     amount: 1,
   },
@@ -541,7 +538,7 @@ const orders: IOrder[] = [
     id: 10,
     name: "가방",
     price: 45000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/bag.jpeg",
     condition: "배송 중",
     amount: 1,
   },
@@ -549,7 +546,7 @@ const orders: IOrder[] = [
     id: 11,
     name: "모자",
     price: 15000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/cap.jpeg",
     condition: "배송 완료",
     amount: 2,
   },
@@ -557,7 +554,7 @@ const orders: IOrder[] = [
     id: 12,
     name: "티셔츠",
     price: 20000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/tshirt.jpeg",
     condition: "배송 완료",
     amount: 3,
   },
@@ -565,7 +562,7 @@ const orders: IOrder[] = [
     id: 13,
     name: "바지",
     price: 30000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/pant.jpeg",
     condition: "주문 취소",
     amount: 1,
   },
@@ -573,7 +570,7 @@ const orders: IOrder[] = [
     id: 14,
     name: "시계",
     price: 50000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/watch.jpeg",
     condition: "배송 중",
     amount: 1,
   },
@@ -581,7 +578,7 @@ const orders: IOrder[] = [
     id: 15,
     name: "책상",
     price: 150000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/desk.jpeg",
     condition: "배송 완료",
     amount: 1,
   },
@@ -589,7 +586,7 @@ const orders: IOrder[] = [
     id: 16,
     name: "의자",
     price: 80000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/chair.jpeg",
     condition: "주문 취소",
     amount: 1,
   },
@@ -597,11 +594,24 @@ const orders: IOrder[] = [
     id: 17,
     name: "램프",
     price: 30000,
-    imageUrl: "/images/toy.jpeg",
+    imageUrl: "/images/lamp.jpeg",
     condition: "배송 중",
     amount: 2,
   },
 ];
+
+const productdata: IProduct[] = [];
+orders.map((order) => {
+  productdata.push({
+    id: order.id,
+    name: order.name,
+    price: order.price,
+    imageUrl: order.imageUrl,
+  });
+});
+
+export const ONLINE_PRODUCTS = shuffleProducts(productdata);
+export const OFFLINE_PRODUCTS = shuffleProducts(productdata);
 
 export const ORDER_PRODUCTS = shuffleOrders(orders);
 
