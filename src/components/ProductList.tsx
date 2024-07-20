@@ -1,17 +1,29 @@
 import React from "react";
 import SectionHeader from "./SectionHeader";
 import { formatMoney } from "../util";
-import { IProduct } from "../definitions/ProductTypes";
-
-export interface ProductProps {
-  idx: number;
-  product: IProduct;
-}
+import { ICartItem, IProduct, ProductProps } from "../definitions/ProductTypes";
+import { useAuth } from "../AuthProvider";
+import { addToCart } from "../lib/cart-Service";
 
 const Product: React.FC<ProductProps> = ({
   idx,
   product: { id, name, price, img_url },
 }) => {
+  const { currentUser } = useAuth();
+
+  const handleAddToCart = async () => {
+    if (currentUser) {
+      const cartItem: ICartItem = { id, name, price, img_url, amount: 1 };
+      try {
+        await addToCart(currentUser.uid, cartItem);
+        alert("장바구니에 담겼습니다.");
+      } catch (error) {
+        console.error(error);
+        alert("장바구니에 담는 데 실패했습니다.");
+      }
+    }
+  };
+
   return (
     <>
       {/*모바일 아이템*/}
@@ -37,7 +49,10 @@ const Product: React.FC<ProductProps> = ({
           </div>
 
           <div className="w-full flex justify-end mt-4">
-            <button className="border border-gray-300 px-2 py-1 text-xs text-gray-700">
+            <button
+              onClick={handleAddToCart}
+              className="border border-gray-300 px-2 py-1 text-xs text-gray-700"
+            >
               + 장바구니 담기
             </button>
           </div>
@@ -49,7 +64,10 @@ const Product: React.FC<ProductProps> = ({
         className="hidden w-full xl:flex xl:flex-col items-start hover:border border-gray-200 px-2 py-3"
       >
         <img src={img_url} alt={name} className="w-full aspect-square" />
-        <button className="w-full flex justify-center items-center border border-gray-300 mt-2  py-1 text-gray-600 hover:bg-yellow-300">
+        <button
+          onClick={handleAddToCart}
+          className="w-full flex justify-center items-center border border-gray-300 mt-2  py-1 text-gray-600 hover:bg-yellow-300"
+        >
           <img
             src={"/images/add-to-cart.svg"}
             alt={"add-to-cart"}

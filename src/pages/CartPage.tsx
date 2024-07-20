@@ -1,19 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CartList from "../components/CartList";
-import { CART_ITEMS, ICartItem } from "../mock";
+import useMe from "../hooks/\buseMe";
+import { fetchCartItems } from "../lib/cart-Service";
+import { ICartItem } from "../definitions/ProductTypes";
 
 const CartPage: React.FC = () => {
-  const [items, setItems] = useState<ICartItem[]>(CART_ITEMS);
+  const { currentUser } = useMe();
+  const [items, setItems] = useState<ICartItem[]>([]);
 
-  const handleQuantityChange = (id: number, quantity: number) => {
+  useEffect(() => {
+    const loadCartItems = async () => {
+      if (currentUser) {
+        try {
+          const fetchedItems = await fetchCartItems(currentUser.uid);
+          setItems(fetchedItems);
+        } catch (error) {
+          console.error("Error fetching cart items: ", error);
+        }
+      }
+    };
+
+    loadCartItems();
+  }, [currentUser]);
+
+  const handleAmountChange = (id: string, amount: number) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
+        item.id === id ? { ...item, quantity: Math.max(1, amount) } : item
       )
     );
   };
 
-  const handleRemoveItem = (id: number) => {
+  const handleRemoveItem = (id: string) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
 
@@ -26,7 +44,7 @@ const CartPage: React.FC = () => {
             <h2 className="text-gray-800 text-xl mb-4">장바구니</h2>
             <CartList
               items={items}
-              onQuantityChange={handleQuantityChange}
+              onAmountChange={handleAmountChange}
               onRemoveItem={handleRemoveItem}
             />
           </div>
@@ -41,7 +59,7 @@ const CartPage: React.FC = () => {
             <div className="flex items-center justify-center">
               <CartList
                 items={items}
-                onQuantityChange={handleQuantityChange}
+                onAmountChange={handleAmountChange}
                 onRemoveItem={handleRemoveItem}
               />
             </div>

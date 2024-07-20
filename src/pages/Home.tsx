@@ -12,13 +12,13 @@ import {
   balanceState,
   rankingIdState,
   rankingState,
-  studentNameState,
+  studentDataState,
 } from "../atmos";
 import { getLatestRanking } from "../lib/Ranking-service";
 
 const Home: React.FC = () => {
   const { currentUser, loading: authLoading } = useMe();
-  const setStudentName = useSetRecoilState(studentNameState);
+  const setStudentData = useSetRecoilState(studentDataState);
   const setBalance = useSetRecoilState(balanceState);
   const setRanking = useSetRecoilState(rankingState);
   const setRankingId = useSetRecoilState(rankingIdState);
@@ -62,7 +62,18 @@ const Home: React.FC = () => {
             throw new Error(topOfflineProducts.error);
           }
 
-          setStudentName(studentData.data.nameKo);
+          setStudentData({
+            signInID: studentData.data.signInID,
+            nameKo: studentData.data.nameKo,
+            nameEn: studentData.data.nameEn,
+            phone: studentData.data.phone,
+            birth: studentData.data.birth,
+            level: studentData.data.level,
+            levelName: studentData.data.levelName,
+            division: studentData.data.division,
+            totalSchedules: studentData.data.totalSchedules,
+            tags: studentData.data.tags,
+          });
           setBalance(studentBalance.data.balance);
           setRanking(rankingData.data.rankings);
           setRankingId(rankingData.data);
@@ -77,7 +88,7 @@ const Home: React.FC = () => {
 
       fetchData();
     }
-  }, [currentUser, setStudentName, setBalance, setRanking]);
+  }, [currentUser, setStudentData, setBalance, setRanking]);
 
   if (authLoading || loading) {
     return (
@@ -95,7 +106,7 @@ const Home: React.FC = () => {
         <ProfileSummary showLink={true} />
       </div>
       <div className="bg-gray-100">
-        <RankingList isSummary={true} />
+        <RankingList />
         <ProductList
           title="온라인 상품"
           desc={"주문하면 학원으로 배송되는 상품"}

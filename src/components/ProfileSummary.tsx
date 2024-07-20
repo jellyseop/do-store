@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { balanceState, studentNameState } from "../atmos";
+import { balanceState, studentDataState } from "../atmos";
 
 interface IProfileSummary {
   showLink: boolean;
 }
 
 const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
-  const studentName = useRecoilValue(studentNameState);
+  const studentName = useRecoilValue(studentDataState);
   const balance = useRecoilValue(balanceState);
 
   if (!studentName) {
@@ -25,7 +25,7 @@ const ProfileSummary: React.FC<IProfileSummary> = ({ showLink }) => {
           className="w-3 xl:w-2.5 aspect-square text-yellow-400"
         />
         <span className="mx-2">|</span>
-        <span className="mr-1">{studentName}</span> 님
+        <span className="mr-1">{studentName.nameKo}</span> 님
         <img
           src={`/images/badges/top-green.svg`}
           alt="badge"

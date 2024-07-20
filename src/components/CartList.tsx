@@ -1,20 +1,20 @@
 import React from "react";
-import { ICartItem } from "../mock";
 import { formatMoney } from "../util";
+import { ICartItem } from "../definitions/ProductTypes";
 
 interface CartListProps {
   items: ICartItem[];
-  onQuantityChange: (id: number, quantity: number) => void;
-  onRemoveItem: (id: number) => void;
+  onAmountChange: (id: string, amount: number) => void;
+  onRemoveItem: (id: string) => void;
 }
 
 const CartList: React.FC<CartListProps> = ({
   items,
-  onQuantityChange,
+  onAmountChange,
   onRemoveItem,
 }) => {
   const totalPrice = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.price * item.amount,
     0
   );
 
@@ -37,7 +37,7 @@ const CartList: React.FC<CartListProps> = ({
             <div className="flex flex-col w-full">
               <div className="flex justify-between items-center w-full">
                 <img
-                  src={item.imageUrl}
+                  src={item.img_url}
                   alt={item.name}
                   className="w-20 h-20 object-cover mr-4"
                 />
@@ -62,29 +62,29 @@ const CartList: React.FC<CartListProps> = ({
               <div className="flex justify-between items-center w-full mt-4">
                 <div className="flex items-center border border-gray-300 rounded-md">
                   <button
-                    onClick={() => onQuantityChange(item.id, item.quantity - 1)}
+                    onClick={() => onAmountChange(item.id, item.amount - 1)}
                     className="text-2xl text-gray-800 px-3 py-1 rounded-l-md"
                   >
                     -
                   </button>
                   <input
                     type="number"
-                    value={item.quantity}
+                    value={item.amount}
                     onChange={(e) =>
-                      onQuantityChange(item.id, Number(e.target.value))
+                      onAmountChange(item.id, Number(e.target.value))
                     }
                     className="text-center text-gray-800 w-12 py-1 outline-none"
                     min="1"
                   />
                   <button
-                    onClick={() => onQuantityChange(item.id, item.quantity + 1)}
+                    onClick={() => onAmountChange(item.id, item.amount + 1)}
                     className="text-2xl text-gray-800 px-3 py-1 rounded-r-md"
                   >
                     +
                   </button>
                 </div>
                 <div className="text-gray-800 text-lg flex flex-row">
-                  {formatMoney(item.price * item.quantity)}{" "}
+                  {formatMoney(item.price * item.amount)}{" "}
                   <img
                     src="/images/do-money.svg"
                     alt="do-money"

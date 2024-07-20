@@ -1,5 +1,6 @@
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
+import { IStudent } from "../definitions/StudentTypes";
 
 type QueryOutput<T> = QuerySuccessOutput<T> | ErrorOutput;
 
@@ -16,17 +17,13 @@ interface ErrorOutput {
   error: string;
 }
 
-export interface StudentData {
-  nameKo: string;
-}
-
 export interface StudentBalance {
   balance: number;
 }
 
 export const getStudentData = async (
   studentId: string
-): Promise<QueryOutput<StudentData>> => {
+): Promise<QueryOutput<IStudent>> => {
   try {
     const studentDoc = await getDoc(doc(db, "students", studentId));
 
@@ -35,7 +32,7 @@ export const getStudentData = async (
     }
     return {
       ok: true,
-      data: studentDoc.data() as StudentData,
+      data: studentDoc.data() as IStudent,
     };
   } catch (error: any) {
     console.log("student fetching error");
