@@ -11,12 +11,18 @@ export interface IProduct {
   name: string;
   price: number;
   img_url: string;
+  product_url: string;
   totalOrders: number;
   createdAt: Timestamp;
+  updatedAt: Timestamp;
   tags: string[];
 }
+
 export interface ICartItem
-  extends Pick<IProduct, "id" | "name" | "price" | "img_url"> {
+  extends Pick<
+    IProduct,
+    "id" | "name" | "price" | "img_url" | "product_url" | "type"
+  > {
   amount: number;
 }
 

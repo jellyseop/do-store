@@ -6,15 +6,17 @@ import ProfileSummary from "../components/ProfileSummary";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { getStudentBalance, getStudentData } from "../lib/UserFunction";
 import { getTopProducts } from "../lib/productFunction";
-import { IProduct } from "../definitions/ProductTypes";
+import { ICartItem, IProduct } from "../definitions/ProductTypes";
 import useMe from "../hooks/\buseMe";
 import {
   balanceState,
+  cartState,
   rankingIdState,
   rankingState,
   studentDataState,
 } from "../atmos";
 import { getLatestRanking } from "../lib/Ranking-service";
+import { saveCartToLocalStorage } from "../localStorage";
 
 const Home: React.FC = () => {
   const { currentUser, loading: authLoading } = useMe();
@@ -22,6 +24,7 @@ const Home: React.FC = () => {
   const setBalance = useSetRecoilState(balanceState);
   const setRanking = useSetRecoilState(rankingState);
   const setRankingId = useSetRecoilState(rankingIdState);
+  const setCart = useSetRecoilState(cartState);
   const [onlineProducts, setOnlineProducts] = useState<IProduct[]>([]);
   const [offlineProducts, setOfflineProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -62,6 +65,18 @@ const Home: React.FC = () => {
             throw new Error(topOfflineProducts.error);
           }
 
+          const cartItems: ICartItem[] = studentData.data.cart
+            ? studentData.data.cart.map((cartItem: any) => ({
+                id: cartItem.id,
+                name: cartItem.name,
+                price: cartItem.price,
+                img_url: cartItem.img_url,
+                amount: cartItem.amount,
+                type: cartItem.type,
+                product_url: cartItem.product_url,
+              }))
+            : [];
+
           setStudentData({
             signInID: studentData.data.signInID,
             nameKo: studentData.data.nameKo,
@@ -73,12 +88,15 @@ const Home: React.FC = () => {
             division: studentData.data.division,
             totalSchedules: studentData.data.totalSchedules,
             tags: studentData.data.tags,
+            cart: cartItems,
           });
           setBalance(studentBalance.data.balance);
           setRanking(rankingData.data.rankings);
           setRankingId(rankingData.data);
           setOnlineProducts(topOnlineProducts.data);
           setOfflineProducts(topOfflineProducts.data);
+          setCart(cartItems);
+          saveCartToLocalStorage(cartItems);
         } catch (error) {
           console.error("Error fetching student or product data:", error);
         } finally {

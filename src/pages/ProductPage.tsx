@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Product from "../components/Product";
 import PageHeader from "../components/mobile/PageHeader";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Pagination from "../components/Pagination";
-import { IProduct } from "../definitions/ProductTypes";
+import { ICartItem, IProduct } from "../definitions/ProductTypes";
+import { useAuth } from "../AuthProvider";
+import { useRecoilState } from "recoil";
+import { cartState } from "../atmos";
+import { saveCartToLocalStorage } from "../localStorage";
 
 interface ProductPageProps {
   title: string;
@@ -24,6 +28,25 @@ const ProductPage: React.FC<ProductPageProps> = ({
   handlePageChange,
   handleProductOrderChange,
 }) => {
+  const { currentUser } = useAuth();
+  const [cartData, setCartData] = useRecoilState(cartState);
+
+  if (!currentUser) {
+    return;
+  }
+
+  useEffect(() => {
+    if (cartData.length <= 0) {
+      return;
+    }
+
+    const syncCartData = (cartData: ICartItem[]) => {
+      saveCartToLocalStorage(cartData);
+    };
+
+    syncCartData(cartData);
+  }, [cartData]);
+
   return (
     <div className="xl:max-w-5xl xl:mx-auto w-full">
       <PageHeader title={title} />
@@ -70,7 +93,13 @@ const ProductPage: React.FC<ProductPageProps> = ({
         <>
           <div className="px-6 xl:px-0 grid grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-12">
             {data.map((product, idx) => (
-              <Product key={product.id} idx={idx} product={product} />
+              <Product
+                user_id={currentUser.uid}
+                key={product.id}
+                idx={idx}
+                setter={setCartData}
+                product={product}
+              />
             ))}
           </div>
           <div className="w-full px-6 xl:px-0 mt-12 xl:mt-24">

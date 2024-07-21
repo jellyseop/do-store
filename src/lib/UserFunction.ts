@@ -1,6 +1,7 @@
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { IStudent } from "../definitions/StudentTypes";
+import { ICartItem } from "../definitions/ProductTypes";
 
 type QueryOutput<T> = QuerySuccessOutput<T> | ErrorOutput;
 
@@ -25,14 +26,26 @@ export const getStudentData = async (
   studentId: string
 ): Promise<QueryOutput<IStudent>> => {
   try {
-    const studentDoc = await getDoc(doc(db, "students", studentId));
+    const studentDocRef = doc(db, "students", studentId);
+    const studentDoc = await getDoc(studentDocRef);
 
     if (!studentDoc.exists()) {
       throw new Error("No such document!");
     }
+
+    const cartColRef = collection(studentDocRef, "cart");
+    const cartSnapshot = await getDocs(cartColRef);
+    const cartItems: ICartItem[] = cartSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as ICartItem[];
+
+    const studentData = studentDoc.data() as IStudent;
+    studentData.cart = cartItems;
+
     return {
       ok: true,
-      data: studentDoc.data() as IStudent,
+      data: studentData,
     };
   } catch (error: any) {
     console.log("student fetching error");

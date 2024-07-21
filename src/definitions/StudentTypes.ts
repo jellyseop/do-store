@@ -1,3 +1,5 @@
+import { ICartItem } from "./ProductTypes";
+
 export interface IStudent {
   signInID: string;
   nameKo: string;
@@ -9,4 +11,5 @@ export interface IStudent {
   division: string;
   totalSchedules: number;
   tags: string[];
+  cart: ICartItem[];
 }

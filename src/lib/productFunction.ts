@@ -44,8 +44,10 @@ export const getTopProducts = async (
         name: data.name,
         price: data.price,
         img_url: data.img_url,
+        product_url: data.product_url,
         totalOrders: data.totalOrders,
         createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
         tags: data.tags,
       };
     });

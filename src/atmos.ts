@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { IRanking, RankingData } from "./lib/Ranking-service";
 import { IStudent } from "./definitions/StudentTypes";
+import { ICartItem } from "./definitions/ProductTypes";
 
 export const studentDataState = atom<IStudent>({
   key: "studentDataState",
@@ -15,6 +16,7 @@ export const studentDataState = atom<IStudent>({
     division: "",
     totalSchedules: 0,
     tags: [],
+    cart: [],
   },
 });
 
@@ -34,4 +36,9 @@ export const rankingIdState = atom<RankingData>({
     id: "",
     rankings: [],
   },
+});
+
+export const cartState = atom<ICartItem[]>({
+  key: "cartState",
+  default: [],
 });

@@ -36,14 +36,17 @@ const getFirestoreProducts = async ({
 
     const products: IProduct[] = snapshot.docs.map((doc) => {
       const data = doc.data() as IProduct;
+
       return {
         id: doc.id,
         type: data.type,
         name: data.name,
+        product_url: data.product_url,
         price: data.price,
         img_url: data.img_url,
         totalOrders: data.totalOrders,
         createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
         tags: data.tags,
       };
     });

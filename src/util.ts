@@ -1,3 +1,5 @@
+import { ICartItem, IProduct } from "./definitions/ProductTypes";
+
 export const formatMoney = (amount: number): string => {
   return new Intl.NumberFormat("ko-KR").format(amount);
 };
@@ -37,4 +39,21 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     "...",
     totalPages,
   ];
+};
+
+export const convertProductToCartItem = (
+  product: IProduct,
+  amount: number
+): ICartItem => {
+  const { id, name, img_url, price, product_url, type } = product;
+
+  return {
+    id,
+    product_url,
+    name,
+    img_url,
+    price,
+    type,
+    amount,
+  };
 };

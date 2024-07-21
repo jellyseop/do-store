@@ -1,14 +1,17 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
-  getDocs,
-  query,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ICartItem } from "../definitions/ProductTypes";
+import { useAuth } from "../AuthProvider";
+import { useRecoilState } from "recoil";
+import { cartState } from "../atmos";
+import { saveCartToLocalStorage } from "../localStorage";
 
 export const addToCart = async (
   studentId: string,
@@ -32,6 +35,8 @@ export const addToCart = async (
         img_url: product.img_url,
         name: product.name,
         price: product.price,
+        type: product.type,
+        product_url: product.product_url || "",
         amount: 1,
       });
       console.log("Product added to cart successfully");
@@ -41,21 +46,43 @@ export const addToCart = async (
   }
 };
 
-export const fetchCartItems = async (
-  studentId: string
-): Promise<ICartItem[]> => {
+export const updateCartItemAmount = async (
+  student_id: string,
+  item_id: string,
+  amount: number
+): Promise<void> => {
   try {
-    const cartRef = collection(db, `students/${studentId}/cart`);
-    const cartSnapshot = await getDocs(query(cartRef));
-
-    const cartItems: ICartItem[] = cartSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as ICartItem[];
-
-    return cartItems;
+    const cartRef = doc(collection(db, `students/${student_id}/cart`), item_id);
+    await setDoc(cartRef, { amount }, { merge: true });
+    console.log("Cart item amount updated successfully");
   } catch (error) {
-    console.error("Error fetching cart items: ", error);
-    throw error;
+    console.error("Error updating cart item amount: ", error);
+  }
+};
+
+export const removeCartItem = async (
+  student_id: string,
+  item_id: string
+): Promise<void> => {
+  try {
+    const cartRef = doc(collection(db, `students/${student_id}/cart`), item_id);
+    await deleteDoc(cartRef);
+    console.log("Cart item removed successfully");
+  } catch (error) {
+    console.error("Error removing cart item: ", error);
+  }
+};
+
+export const handleAddToCart = (user_id: string, item: ICartItem) => {
+  const [data, setData] = useRecoilState(cartState);
+
+  setData((prevCart) => [...prevCart, item]);
+  saveCartToLocalStorage(data);
+  try {
+    addToCart(user_id, item);
+    alert("장바구니에 담겼습니다.");
+  } catch (error) {
+    console.error(error);
+    alert("장바구니에 담는 데 실패했습니다.");
   }
 };
