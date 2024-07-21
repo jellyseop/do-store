@@ -1,15 +1,41 @@
-import { formatMoney } from "../util";
-import { ProductProps } from "./ProductList";
+import { SetterOrUpdater } from "recoil";
+import { ICartItem, ProductProps } from "../definitions/ProductTypes";
+import { addToCart } from "../lib/cart-Service";
+import { convertProductToCartItem, formatMoney } from "../util";
 
-const Product: React.FC<ProductProps> = ({
-  product: { id, name, price, imageUrl },
-}) => {
+const Product: React.FC<
+  ProductProps & { user_id: string; setter: SetterOrUpdater<ICartItem[]> }
+> = ({ user_id, setter, product }) => {
+  const handleAddToCart = () => {
+    setter((prevCart) => [
+      ...prevCart,
+      {
+        ...product,
+        amount: 1,
+      },
+    ]);
+    try {
+      addToCart(user_id, convertProductToCartItem(product, 1));
+      alert("장바구니에 담겼습니다.");
+    } catch (error) {
+      console.error(error);
+      alert("장바구니에 담는 데 실패했습니다.");
+    }
+  };
+
   return (
     <>
       {/*웹 아이템*/}
-      <li id={id + ""} className=" w-full flex flex-col items-start">
-        <img src={imageUrl} alt={name} className="w-full aspect-square" />
-        <button className="w-full text-sm flex justify-center items-center border border-gray-300 mt-2  py-1.5 text-gray-600 ">
+      <li id={product.id + ""} className=" w-full flex flex-col items-start">
+        <img
+          src={product.img_url}
+          alt={product.name}
+          className="w-full aspect-square"
+        />
+        <button
+          onClick={handleAddToCart}
+          className="w-full text-sm flex justify-center items-center border border-gray-300 mt-2  py-1.5 text-gray-600 "
+        >
           <img
             src={"/images/add-to-cart.svg"}
             alt={"add-to-cart"}
@@ -19,16 +45,16 @@ const Product: React.FC<ProductProps> = ({
         </button>
         <div className="flex flex-col w-full mt-2">
           <span className="tracking-wide text-sm text-gray-600 font-light">
-            {name}
+            {product.name}
           </span>
           <div className="flex mt-1">
-            <img
-              src="/images/do-money.svg"
-              alt="coin"
-              className="w-4 aspect-square mr-0.5"
-            />
-            <span className="font-medium text-gray-800">
-              &nbsp;{formatMoney(price)}
+            <span className="flex flex-row font-medium text-gray-800">
+              &nbsp;{formatMoney(product.price)}
+              <img
+                src="/images/do-money.svg"
+                alt="coin"
+                className="w-4 aspect-square ml-1"
+              />
             </span>
           </div>
         </div>

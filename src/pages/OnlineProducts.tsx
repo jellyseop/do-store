@@ -3,13 +3,21 @@ import ProductPage from "./ProductPage";
 import useProductData from "../hooks/useProductData";
 
 const OnlineProducts: React.FC = () => {
-  const { data, productOrder, handlePageChange, handleProductOrderChange } =
-    useProductData(0);
+  const {
+    data,
+    totalCounts,
+    totalPages,
+    productOrder,
+    handlePageChange,
+    handleProductOrderChange,
+  } = useProductData(1);
 
   return (
     <ProductPage
       title="전체 온라인 상품"
       data={data}
+      totalCounts={totalCounts}
+      totalPages={totalPages}
       productOrder={productOrder}
       handlePageChange={handlePageChange}
       handleProductOrderChange={handleProductOrderChange}

@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "dostore": "logic-test-ae149",
+    "default": "logic-test-ae149"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

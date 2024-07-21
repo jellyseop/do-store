@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       <div className="hidden w-full max-w-5xl xl:flex xl:mx-auto justify-end">
         <ProfileSummary showLink={true} />
       </div>
-      <div className="w-full max-w-5xl xl:mx-auto flex justify-between items-center mb-4 bg-white">
+      <div className="w-full xl:max-w-5xl xl:mx-auto flex justify-between items-center mb-4 bg-white">
         <Link to="/">
           <img src="/images/logo.svg" alt="Do store" className="h-10 xl:h-12" />
         </Link>
