@@ -1,15 +1,8 @@
 import React from "react";
-
-interface Transaction {
-  id: number;
-  type: string;
-  date: string;
-  teacher: string;
-  amount: number;
-}
+import { IRecord } from "../lib/UserFunction";
 
 interface DoMoneyListProps {
-  transactions: Transaction[];
+  transactions: IRecord[];
 }
 
 const DoMoneyList: React.FC<DoMoneyListProps> = ({ transactions }) => {
@@ -38,8 +31,10 @@ const DoMoneyList: React.FC<DoMoneyListProps> = ({ transactions }) => {
             className="border-b border-gray-300 h-14 text-sm text-gray-800"
           >
             <td className="py-2">{transaction.type}</td>
-            <td className="py-2">{transaction.date}</td>
-            <td className="py-2">{transaction.teacher}</td>
+            <td className="py-2">
+              {new Date(transaction.createdAt.seconds * 1000).toLocaleString()}
+            </td>
+            <td className="py-2">{transaction.createdBy}</td>
             <div className="py-2">
               <td className="flex items-center justify-center pt-2.5">
                 {transaction.amount}

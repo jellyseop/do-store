@@ -1,18 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import MyPageLayout from "../components/MyPageLayout";
 import DoMoneyList from "../components/DoMoneyList";
-import { ITransaction, SHUFFLED_TRANSACTIONS } from "../mock";
-import { delay } from "../util";
 import { useLocation, useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
 import LoadingSpinner from "../components/LoadingSpinner";
-
-const fetchData = async (page: number): Promise<ITransaction[]> => {
-  await delay(300);
-  const data = SHUFFLED_TRANSACTIONS;
-  const start = 7 * (page - 1);
-  return data.slice(start, start + 7);
-};
+import { useRecoilValue } from "recoil";
+import { balanceState, recordsState } from "../atmos";
+import { IRecord } from "../lib/UserFunction";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -23,7 +17,9 @@ const DoMoneyHistory: React.FC = () => {
   const query = useQuery();
 
   const [page, setPage] = useState<number>(1);
-  const [data, setData] = useState<ITransaction[] | null>(null);
+  const [data, setData] = useState<IRecord[] | null>(null);
+  const records = useRecoilValue(recordsState);
+  const balance = useRecoilValue(balanceState);
 
   useEffect(() => {
     const initialPage = Number(query.get("page")) || 1;
@@ -38,11 +34,13 @@ const DoMoneyHistory: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const fetchedData = await fetchData(page);
+      const start = 7 * (page - 1);
+      const fetchedData = records.slice(start, start + 7);
       setData(fetchedData);
+      console.log(data);
     };
     loadData();
-  }, [page]);
+  }, [page, records]);
 
   const handlePageChange = useCallback(
     (newPage: number) => setPage(newPage),
@@ -63,7 +61,7 @@ const DoMoneyHistory: React.FC = () => {
         <DoMoneyList transactions={data} />
         <div className="w-full flex justify-center mt-6">
           <Pagination
-            totalPages={Math.ceil(SHUFFLED_TRANSACTIONS.length / 7)}
+            totalPages={Math.ceil(records.length / 7)}
             handlePageChange={handlePageChange}
           />
         </div>
@@ -83,7 +81,7 @@ const DoMoneyHistory: React.FC = () => {
                 최근 수령한 Do Money 순으로 내역을 볼 수 있어요
               </p>
               <h3 className="flex flex-row text-gray-800 text-base mb-6">
-                보유 Do money : 1,009
+                보유 Do money : {balance}
                 <img
                   src="/images/do-money.svg"
                   alt="do-money"

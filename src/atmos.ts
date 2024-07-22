@@ -2,6 +2,7 @@ import { atom } from "recoil";
 import { IRanking, RankingData } from "./lib/Ranking-service";
 import { IStudent } from "./definitions/StudentTypes";
 import { ICartItem } from "./definitions/ProductTypes";
+import { IRecord } from "./lib/UserFunction";
 
 export const studentDataState = atom<IStudent>({
   key: "studentDataState",
@@ -23,6 +24,11 @@ export const studentDataState = atom<IStudent>({
 export const balanceState = atom<number>({
   key: "balanceState",
   default: 0,
+});
+
+export const recordsState = atom<IRecord[]>({
+  key: "recordsState",
+  default: [],
 });
 
 export const rankingState = atom<IRanking[]>({

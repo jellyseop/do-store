@@ -8,7 +8,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ICartItem } from "../definitions/ProductTypes";
-import { useAuth } from "../AuthProvider";
 import { useRecoilState } from "recoil";
 import { cartState } from "../atmos";
 import { saveCartToLocalStorage } from "../localStorage";

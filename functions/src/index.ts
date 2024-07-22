@@ -1,9 +1,8 @@
-import { collection } from "firebase/firestore";
 import { onRequest } from "firebase-functions/v2/https";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-import { log } from "firebase-functions/logger";
+
 
 interface DoRecord {
   amount: number;
@@ -176,5 +175,4 @@ export const helloWorld = onRequest(async (req, res): Promise<any> => {
       ok: false,
       error: error.message || "An error occurred",
     };
-  }
-});
+}});
