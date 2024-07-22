@@ -1,5 +1,6 @@
 export type TableOutput<T> = TableSuccessOutput<T> | ErrorOutput;
 export type QueryOutput<T> = QuerySuccessOutput<T> | ErrorOutput;
+export type MutateOutput = SuccessOutput | ErrorOutput;
 
 interface TableSuccessOutput<T> extends QuerySuccessOutput<T> {
   totalCounts: number;
