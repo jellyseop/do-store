@@ -1,4 +1,10 @@
-import { getDoc, doc, collection, getDocs } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  collection,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { IStudent } from "../definitions/StudentTypes";
 import { ICartItem } from "../definitions/ProductTypes";
@@ -18,8 +24,18 @@ interface ErrorOutput {
   error: string;
 }
 
+export interface IRecord {
+  id: string;
+  amount: number;
+  detail: string;
+  createdAt: Timestamp;
+  createdBy: string;
+  type: string;
+}
+
 export interface StudentBalance {
   balance: number;
+  records: IRecord[];
 }
 
 export const getStudentData = async (
@@ -65,9 +81,24 @@ export const getStudentBalance = async (
     if (!balanceDoc.exists()) {
       throw new Error("No such document!");
     }
+
+    const data = balanceDoc.data() as Omit<StudentBalance, "records">;
+
+    // Fetching the records sub-collection
+    const recordsCollection = collection(db, `do/${studentId}/records`);
+    const recordsSnapshot = await getDocs(recordsCollection);
+
+    const records: IRecord[] = recordsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as IRecord[];
+
     return {
       ok: true,
-      data: balanceDoc.data() as StudentBalance,
+      data: {
+        ...data,
+        records,
+      },
     };
   } catch (error: any) {
     return {

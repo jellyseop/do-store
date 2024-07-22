@@ -24,7 +24,7 @@ const MyPageLayout: React.FC<MyPageLayoutProps> = ({
       {/* Main Content Section */}
       <section className="w-full xl:w-3/4">
         <h1 className="mb-9 flex items-center">
-          <h2 className="text-xl text-gray-700 font-normal mr-4">{title}</h2>
+          <div className="text-xl text-gray-700 font-normal mr-4">{title}</div>
           <p className="text-gray-400 text-sm">{subtitle}</p>
         </h1>
         <div className="border-t border-gray-300 mt-4 pt-3">{children}</div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { formatMoney } from "../util";
 import { useAuth } from "../AuthProvider";
 import { useRecoilState } from "recoil";
