@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { formatMoney } from "../util";
 import { useAuth } from "../AuthProvider";
 import { useRecoilState } from "recoil";
-import { cartState, studentDataState } from "../atmos";
+import { cartState } from "../atmos";
 import { removeCartItem, updateCartItemAmount } from "../lib/cart-Service";
 import {
   loadCartFromLocalStorage,
   saveCartToLocalStorage,
 } from "../localStorage";
 
-import { Timestamp } from "firebase/firestore";
-import { addOrder } from "../lib/order-service";
-import { IOrder } from "../definitions/OrderType";
 import { ICartItem } from "../definitions/ProductTypes";
+import { MutateOutput } from "../definitions/common-types";
 
 const CartList: React.FC = () => {
   const { currentUser } = useAuth();
-
   const [cartData, setCartData] = useRecoilState(cartState);
-  const [studentData] = useRecoilState(studentDataState);
 
   const totalPrice = cartData.reduce(
     (sum, item) => sum + item.price * item.amount,
@@ -39,6 +35,7 @@ const CartList: React.FC = () => {
     if (cartData.length <= 0) {
       return;
     }
+
     const syncCartData = (cartData: ICartItem[]) => {
       saveCartToLocalStorage(cartData);
     };
@@ -77,43 +74,37 @@ const CartList: React.FC = () => {
     }
   };
 
+  const url = "http://127.0.0.1:5001/logic-test-ae149/us-central1/helloWorld"; // 요청할 URL
+
   const handleOrder = async () => {
     if (!currentUser) {
       return;
     }
 
-    const orders: IOrder[] = cartData.map((item) => {
-      console.log(item);
-
-      return {
-        student_id: currentUser.uid,
-        nameKo: studentData.nameKo,
-        nameEn: studentData.nameEn,
-        product_id: item.id,
-        type: item.type,
-        desc: item.product_url,
-        img_url: item.img_url,
-        name: item.name,
-        price: item.price,
-        amount: item.amount,
-        status: 1,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      };
-    });
-
     try {
-      console.log(orders);
+      const accessToken = await currentUser.getIdToken();
 
-      for (const order of orders) {
-        await addOrder(order);
+      const options = {
+        method: "POST", // HTTP 메소드
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+          // 요청 헤더
+        },
+      };
+
+      const response = await fetch(url, options);
+      const result = (await response.json()) as MutateOutput;
+
+      if (!result.ok) {
+        return alert("결제 실패: " + result.error);
       }
-      console.log("All orders added successfully");
+
       setCartData([]);
       saveCartToLocalStorage([]);
-      alert("주문이 완료되었습니다!");
+      return alert("결제 성공!");
     } catch (error) {
-      console.error("Error adding orders: ", error);
+      console.error("Error:", error);
     }
   };
 

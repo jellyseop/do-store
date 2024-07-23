@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import RankingList from "../components/RankingList";
 import ProductList from "../components/ProductList";
 import ProfileSummary from "../components/ProfileSummary";
@@ -13,6 +13,7 @@ import {
   cartState,
   rankingIdState,
   rankingState,
+  recordsState,
   studentDataState,
 } from "../atmos";
 import { getLatestRanking } from "../lib/Ranking-service";
@@ -22,12 +23,15 @@ const Home: React.FC = () => {
   const { currentUser, loading: authLoading } = useMe();
   const setStudentData = useSetRecoilState(studentDataState);
   const setBalance = useSetRecoilState(balanceState);
+  const setRecords = useSetRecoilState(recordsState);
   const setRanking = useSetRecoilState(rankingState);
   const setRankingId = useSetRecoilState(rankingIdState);
   const setCart = useSetRecoilState(cartState);
   const [onlineProducts, setOnlineProducts] = useState<IProduct[]>([]);
   const [offlineProducts, setOfflineProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const data = useRecoilValue(recordsState);
 
   useEffect(() => {
     if (currentUser) {
@@ -91,6 +95,7 @@ const Home: React.FC = () => {
             cart: cartItems,
           });
           setBalance(studentBalance.data.balance);
+          setRecords(studentBalance.data.records);
           setRanking(rankingData.data.rankings);
           setRankingId(rankingData.data);
           setOnlineProducts(topOnlineProducts.data);
@@ -101,6 +106,7 @@ const Home: React.FC = () => {
           console.error("Error fetching student or product data:", error);
         } finally {
           setLoading(false);
+          console.log(data);
         }
       };
 
