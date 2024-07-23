@@ -2,7 +2,7 @@ import { onRequest } from "firebase-functions/v2/https";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-
+import { error } from "firebase-functions/logger";
 
 interface DoRecord {
   amount: number;
@@ -67,72 +67,81 @@ const auth = getAuth();
 
 export const helloWorld = onRequest(async (req, res): Promise<any> => {
   const idToken = req.headers.authorization?.split("Bearer ")[1];
-  console.log(idToken);
-
   if (!idToken) {
-    res.status(401).send("Authorization token missing");
-    return {
-      ok: false,
-      error: "Authorization token missing",
-    };
+    return res
+      .status(401)
+      .send({ ok: false, error: "Authorization token missing" });
   }
 
   try {
     const user = await auth.verifyIdToken(idToken);
 
     if (!user) {
-      res.status(402).send("user not authorization");
-      return {
-        ok: false,
-        error: "User not authorization",
-      };
+      return res.status(401).send({ ok: false, error: "unauthenticated." });
     }
 
-    const studentSnapshot = await db.collection("students").doc(user.uid).get();
-
-    // student collection check if the user not exists in the student collection
-
+    const studentRef = db.collection("students").doc(user.uid);
+    const studentSnapshot = await studentRef.get();
     if (!studentSnapshot.exists) {
-      res.status(401).send("User does not exist");
-      return { ok: false, error: "User does not exist" };
+      return res.status(404).send({ ok: false, error: "unauthorized." });
     }
-
     const student = studentSnapshot.data() as {
       nameKo: string;
       nameEn: string;
     };
 
-    const doAccountSnapshot = await db.collection("do").doc(user.uid).get();
+    const productRef = db.collection("products");
+    const cartRef = studentRef.collection("cart");
+    const cartSnapshot = await cartRef.get();
+    if (cartSnapshot.docs.length === 0) {
+      return res
+        .status(400)
+        .send({ ok: false, error: "장바구니에 상품이 없습니다." });
+    }
+
+    let cartData: CartItem[] = [];
+    let totalPrice = 0;
+
+    for await (const cart of cartSnapshot.docs) {
+      const snapshot = await productRef.doc(cart.id).get();
+      const product = snapshot.data() as Product;
+      if (cart.data().amount <= 0) {
+        return res
+          .status(400)
+          .send({ ok: false, error: "상품 개수가 유효하지 않습니다." });
+      }
+      cartData.push({
+        id: cart.data().id,
+        name: product.name,
+        price: product.price,
+        img_url: product.img_url,
+        product_url: product.product_url,
+        type: product.type,
+        amount: cart.data().amount,
+      });
+      totalPrice += product.price * cart.data().amount;
+    }
+
+    const doAccountRef = db.collection("do").doc(user.uid);
+    const doAccountSnapshot = await doAccountRef.get();
 
     if (!doAccountSnapshot.exists) {
-      return res.status(403).send({ ok: false, error: "잔액 부족" }); //문구 수정 요망!
+      return res
+        .status(404)
+        .send({ ok: false, error: "두머니 계좌가 존재하지 않습니다." });
     }
 
     const doAccount = doAccountSnapshot.data() as DoAccount;
 
-    const { cartData } = req.body as { cartData: CartItem[] };
-    let totalPrice = 0;
-    for (const item of cartData) {
-      if (item.amount <= 0) {
-        return res.status(400).send({ ok: false, error: "Invalid amount" });
-      }
-      totalPrice += item.price * item.amount;
-    }
-
-    console.log("total price: ", totalPrice);
-    console.log("total balance: ", doAccount.balance);
-
     if (totalPrice > doAccount.balance) {
-      return res.status(401).send({ ok: false, error: "잔액 부족" }); //문구 수정 요��!
+      return res.status(403).send({ ok: false, error: "잔액 부족" });
     }
-
-    const balanceRef = db.collection("do").doc(user.uid);
 
     db.runTransaction(async (transaction) => {
       for (const item of cartData) {
-        const productRef = db.collection("products").doc(item.id);
-        const recordRef = balanceRef.collection("record").doc();
         const orderRef = db.collection("orders").doc();
+        const productRef = db.collection("products").doc(item.id);
+        const recordRef = doAccountRef.collection("record").doc();
 
         transaction.set(orderRef, {
           student_id: user.uid,
@@ -154,16 +163,18 @@ export const helloWorld = onRequest(async (req, res): Promise<any> => {
           totalOrder: FieldValue.increment(1),
         });
 
-        transaction.update(balanceRef, {
+        transaction.update(doAccountRef, {
           balance: FieldValue.increment(-(item.price * item.amount)),
         });
         transaction.set(recordRef, {
           amount: -(item.price * item.amount),
           detail: "order",
-          createdBy: "do-store",
+          createdBy: "admin",
           createdAt: Timestamp.now(),
           type: "do-store",
         });
+
+        transaction.delete(cartRef.doc(item.id));
       }
     });
 
@@ -171,8 +182,8 @@ export const helloWorld = onRequest(async (req, res): Promise<any> => {
       ok: true,
     });
   } catch (error: any) {
-    return {
-      ok: false,
-      error: error.message || "An error occurred",
-    };
-}});
+    return res
+      .status(500)
+      .send({ ok: false, error: error.message || "An error occurred" });
+  }
+});

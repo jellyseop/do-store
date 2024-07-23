@@ -14,7 +14,6 @@ import { MutateOutput } from "../definitions/common-types";
 
 const CartList: React.FC = () => {
   const { currentUser } = useAuth();
-
   const [cartData, setCartData] = useRecoilState(cartState);
 
   const totalPrice = cartData.reduce(
@@ -30,6 +29,10 @@ const CartList: React.FC = () => {
 
   useEffect(() => {
     if (!currentUser) {
+      return;
+    }
+
+    if (cartData.length <= 0) {
       return;
     }
 
@@ -88,8 +91,6 @@ const CartList: React.FC = () => {
           Authorization: `Bearer ${accessToken}`,
           // 요청 헤더
         },
-        body: JSON.stringify({ cartData }),
-        // 요청 본문을 JSON 문자열로 변환
       };
 
       const response = await fetch(url, options);
@@ -100,6 +101,8 @@ const CartList: React.FC = () => {
       }
 
       setCartData([]);
+      saveCartToLocalStorage([]);
+      return alert("결제 성공!");
     } catch (error) {
       console.error("Error:", error);
     }

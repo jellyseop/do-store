@@ -82,10 +82,10 @@ export const getStudentBalance = async (
       throw new Error("No such document!");
     }
 
-    const data = balanceDoc.data() as Omit<StudentBalance, "records">;
+    const data = balanceDoc.data() as StudentBalance;
 
     // Fetching the records sub-collection
-    const recordsCollection = collection(db, `do/${studentId}/records`);
+    const recordsCollection = collection(db, `do/${studentId}/record`);
     const recordsSnapshot = await getDocs(recordsCollection);
 
     const records: IRecord[] = recordsSnapshot.docs.map((doc) => ({
