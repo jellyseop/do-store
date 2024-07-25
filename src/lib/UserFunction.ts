@@ -4,25 +4,13 @@ import {
   collection,
   getDocs,
   Timestamp,
+  orderBy,
+  query,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { IStudent } from "../definitions/StudentTypes";
 import { ICartItem } from "../definitions/ProductTypes";
-
-type QueryOutput<T> = QuerySuccessOutput<T> | ErrorOutput;
-
-interface QuerySuccessOutput<T> extends SuccessOutput {
-  data: T;
-}
-
-interface SuccessOutput {
-  ok: true;
-}
-
-interface ErrorOutput {
-  ok: false;
-  error: string;
-}
+import { QueryOutput } from "../definitions/common-types";
 
 export interface IRecord {
   id: string;
@@ -64,7 +52,7 @@ export const getStudentData = async (
       data: studentData,
     };
   } catch (error: any) {
-    console.log("student fetching error");
+    console.error("student fetching error");
 
     return {
       ok: false,
@@ -86,7 +74,8 @@ export const getStudentBalance = async (
 
     // Fetching the records sub-collection
     const recordsCollection = collection(db, `do/${studentId}/record`);
-    const recordsSnapshot = await getDocs(recordsCollection);
+    const recordsQuery = query(recordsCollection, orderBy("createdAt", "desc"));
+    const recordsSnapshot = await getDocs(recordsQuery);
 
     const records: IRecord[] = recordsSnapshot.docs.map((doc) => ({
       id: doc.id,

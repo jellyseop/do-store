@@ -11,10 +11,12 @@ import {
 
 import { ICartItem } from "../definitions/ProductTypes";
 import { MutateOutput } from "../definitions/common-types";
+import { useNavigate } from "react-router-dom";
 
 const CartList: React.FC = () => {
   const { currentUser } = useAuth();
   const [cartData, setCartData] = useRecoilState(cartState);
+  const navigate = useNavigate();
 
   const totalPrice = cartData.reduce(
     (sum, item) => sum + item.price * item.amount,
@@ -45,8 +47,6 @@ const CartList: React.FC = () => {
 
   const handleAmountChange = (id: string, amount: number) => {
     if (amount <= 0) {
-      console.log("blocked!");
-
       return;
     }
 
@@ -102,6 +102,7 @@ const CartList: React.FC = () => {
 
       setCartData([]);
       saveCartToLocalStorage([]);
+      navigate("/");
       return alert("결제 성공!");
     } catch (error) {
       console.error("Error:", error);
@@ -118,7 +119,7 @@ const CartList: React.FC = () => {
 
   return (
     <div className="xl:w-3/4">
-      <div className="xl:border-y xl:border-gray-800 xl:flex xl:justify-between xl:gap-x-10 ">
+      <div className="xl:border-y xl:border-gray-800 xl:flex xl:justify-between xl:gap-x-10 py-4">
         <ul className="w-full xl:mr-10 border-y border-gray-800 xl:border-none">
           {cartData.map((item) => (
             <li
@@ -206,8 +207,9 @@ const CartList: React.FC = () => {
             </div>
           </div>
           <button
-            className="w-full mt-6 bg-yellow-300 text-gray-800 text-lg py-4 rounded-lg"
+            className="w-full mt-6 bg-yellow-300 text-gray-800 mb-4 text-lg py-4 rounded-lg"
             onClick={handleOrder}
+            disabled={cartData.length === 0}
           >
             주문하기
           </button>

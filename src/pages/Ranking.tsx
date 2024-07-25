@@ -20,16 +20,7 @@ const Ranking: React.FC = () => {
 
   //if rankingId is not provided, redirect to home page
 
-  // useEffect(() => {
-  //   if (!rankingId || !rankingId.id) {
-  //     console.log("No rankingId found, redirecting to home.");
-  //     navigate("/");
-  //     console.log("Navigated to home");
-  //   }
-  // }, [rankingId, navigate]);
-
   if (!rankingId || !rankingId.id) {
-    console.log("No rankingId found, redirecting to home.");
     return <Navigate to="/" replace />;
   }
 
@@ -46,8 +37,6 @@ const Ranking: React.FC = () => {
         ranker.nameEn === studentData.nameEn
       );
     });
-
-    console.log(rankingId);
 
     if (match) {
       setMyRank(match.rank);

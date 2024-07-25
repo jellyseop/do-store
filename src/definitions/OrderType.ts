@@ -15,3 +15,13 @@ export interface IOrder {
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
+
+export interface IPartialOrder {
+  id: string;
+  name: string;
+  price: number;
+  amount: number;
+  status: number;
+  img_url: string;
+  createdAt: Timestamp;
+}

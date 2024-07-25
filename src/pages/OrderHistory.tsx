@@ -1,18 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import MyPageLayout from "../components/MyPageLayout";
-import { IOrder, ORDER_PRODUCTS } from "../mock";
-import { delay } from "../util";
 import Pagination from "../components/Pagination";
 import { useLocation, useNavigate } from "react-router-dom";
 import OrderList from "../components/OrderList";
 import LoadingSpinner from "../components/LoadingSpinner";
-
-const fetchData = async (page: number): Promise<IOrder[]> => {
-  await delay(1000);
-  const data = ORDER_PRODUCTS;
-  const start = 5 * (page - 1);
-  return data.slice(start, start + 5);
-};
+import { useRecoilValue } from "recoil";
+import { orderState } from "../atmos";
+import { IPartialOrder } from "../definitions/OrderType";
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -23,7 +17,8 @@ const OrderHistory: React.FC = () => {
   const query = useQuery();
 
   const [page, setPage] = useState<number>(1);
-  const [data, setData] = useState<IOrder[] | null>(null);
+  const [data, setData] = useState<IPartialOrder[] | null>(null);
+  const orders = useRecoilValue(orderState);
 
   useEffect(() => {
     const initialPage = Number(query.get("page")) || 1;
@@ -38,11 +33,12 @@ const OrderHistory: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      const fetchedData = await fetchData(page);
+      const start = 5 * (page - 1);
+      const fetchedData = orders.slice(start, start + 5);
       setData(fetchedData);
     };
     loadData();
-  }, [page]);
+  }, [page, orders]);
 
   const handlePageChange = useCallback(
     (newPage: number) => setPage(newPage),
@@ -63,7 +59,7 @@ const OrderHistory: React.FC = () => {
         <OrderList orders={data} />
         <div className="w-full flex justify-center mt-6">
           <Pagination
-            totalPages={Math.ceil(ORDER_PRODUCTS.length / 5)}
+            totalPages={Math.ceil(orders.length / 5)}
             handlePageChange={handlePageChange}
           />
         </div>

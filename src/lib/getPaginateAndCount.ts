@@ -38,7 +38,7 @@ export async function getPaginateAndCount(
 
     return { ok: true, data: snapshot, totalCounts, totalPages };
   } catch (error) {
-    console.log("paginated error:", error);
+    console.error("paginated error:", error);
 
     return {
       ok: false,

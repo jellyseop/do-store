@@ -27,7 +27,6 @@ export const addToCart = async (
       await updateDoc(cartRef, {
         amount: cartSnap.data().amount + 1,
       });
-      console.log("Product amount updated in cart successfully");
     } else {
       await setDoc(cartRef, {
         id: product.id,
@@ -38,7 +37,6 @@ export const addToCart = async (
         product_url: product.product_url || "",
         amount: 1,
       });
-      console.log("Product added to cart successfully");
     }
   } catch (error) {
     console.error("Error adding product to cart: ", error);
@@ -53,7 +51,6 @@ export const updateCartItemAmount = async (
   try {
     const cartRef = doc(collection(db, `students/${student_id}/cart`), item_id);
     await setDoc(cartRef, { amount }, { merge: true });
-    console.log("Cart item amount updated successfully");
   } catch (error) {
     console.error("Error updating cart item amount: ", error);
   }
@@ -66,7 +63,6 @@ export const removeCartItem = async (
   try {
     const cartRef = doc(collection(db, `students/${student_id}/cart`), item_id);
     await deleteDoc(cartRef);
-    console.log("Cart item removed successfully");
   } catch (error) {
     console.error("Error removing cart item: ", error);
   }

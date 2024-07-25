@@ -6,6 +6,9 @@ import Pagination from "../components/Pagination";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { IProduct } from "../definitions/ProductTypes";
 import { searchProducts } from "../lib/Search-service";
+import { useRecoilState } from "recoil";
+import { cartState } from "../atmos";
+import { useAuth } from "../AuthProvider";
 
 const SearchResults: React.FC = () => {
   const navigate = useNavigate();
@@ -14,11 +17,14 @@ const SearchResults: React.FC = () => {
   const searchQuery = query.get("query") || "";
   const [page, setPage] = useState<number>(Number(query.get("page")) || 1);
   const [productType, setProductType] = useState<number>(
-    Number(query.get("type")) || 1
+    Number(query.get("type")) || 2
   );
   const [data, setData] = useState<IProduct[] | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [totalCounts, setTotalCounts] = useState<number>(0);
+
+  const { currentUser } = useAuth();
+  const [cartData, setCartData] = useRecoilState(cartState);
 
   // Update URL query parameters
   useEffect(() => {
@@ -92,7 +98,13 @@ const SearchResults: React.FC = () => {
         <>
           <div className="px-6 xl:px-0 grid grid-cols-2 xl:grid-cols-4 gap-x-6 gap-y-8">
             {data.map((product, idx) => (
-              <Product key={product.id} idx={idx} product={product} />
+              <Product
+                key={product.id}
+                idx={idx}
+                product={product}
+                user_id={currentUser ? currentUser.uid : ""}
+                setter={setCartData}
+              />
             ))}
           </div>
           <div className="w-full px-6 xl:px-0 mt-12 xl:mt-24">

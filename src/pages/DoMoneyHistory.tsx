@@ -37,7 +37,6 @@ const DoMoneyHistory: React.FC = () => {
       const start = 7 * (page - 1);
       const fetchedData = records.slice(start, start + 7);
       setData(fetchedData);
-      console.log(data);
     };
     loadData();
   }, [page, records]);

@@ -46,6 +46,8 @@ export const searchProducts = async ({
         img_url: data.img_url,
         totalOrders: data.totalOrders,
         createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+        product_url: data.product_url,
         tags: data.tags,
       };
     });

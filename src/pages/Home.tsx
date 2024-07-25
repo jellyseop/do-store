@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import RankingList from "../components/RankingList";
 import ProductList from "../components/ProductList";
 import ProfileSummary from "../components/ProfileSummary";
@@ -11,6 +11,7 @@ import useMe from "../hooks/\buseMe";
 import {
   balanceState,
   cartState,
+  orderState,
   rankingIdState,
   rankingState,
   recordsState,
@@ -18,6 +19,7 @@ import {
 } from "../atmos";
 import { getLatestRanking } from "../lib/Ranking-service";
 import { saveCartToLocalStorage } from "../localStorage";
+import { fetchOrders } from "../lib/order-service";
 
 const Home: React.FC = () => {
   const { currentUser, loading: authLoading } = useMe();
@@ -27,11 +29,10 @@ const Home: React.FC = () => {
   const setRanking = useSetRecoilState(rankingState);
   const setRankingId = useSetRecoilState(rankingIdState);
   const setCart = useSetRecoilState(cartState);
+  const setOrder = useSetRecoilState(orderState);
   const [onlineProducts, setOnlineProducts] = useState<IProduct[]>([]);
   const [offlineProducts, setOfflineProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
-  const data = useRecoilValue(recordsState);
 
   useEffect(() => {
     if (currentUser) {
@@ -45,12 +46,14 @@ const Home: React.FC = () => {
             rankingData,
             topOnlineProducts,
             topOfflineProducts,
+            ordersResult,
           ] = await Promise.all([
             getStudentData(studentId),
             getStudentBalance(studentId),
             getLatestRanking(),
             getTopProducts(1, 4),
             getTopProducts(2, 4),
+            fetchOrders(studentId),
           ]);
 
           if (!studentData.ok) {
@@ -67,6 +70,9 @@ const Home: React.FC = () => {
           }
           if (!topOfflineProducts.ok) {
             throw new Error(topOfflineProducts.error);
+          }
+          if (!ordersResult.ok) {
+            throw new Error(ordersResult.error);
           }
 
           const cartItems: ICartItem[] = studentData.data.cart
@@ -101,12 +107,12 @@ const Home: React.FC = () => {
           setOnlineProducts(topOnlineProducts.data);
           setOfflineProducts(topOfflineProducts.data);
           setCart(cartItems);
+          setOrder(ordersResult.data);
           saveCartToLocalStorage(cartItems);
         } catch (error) {
           console.error("Error fetching student or product data:", error);
         } finally {
           setLoading(false);
-          console.log(data);
         }
       };
 

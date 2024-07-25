@@ -33,38 +33,28 @@ const Login: React.FC = () => {
     <div className="w-full min-h-screen xl:bg-gray-100 xl:flex xl:items-center">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-start px-6 py-36 xl:px-12 xl:py-16 w-full max-w-xl mx-auto bg-white xl:shadow"
+        className="h-full flex flex-col items-start px-6 py-44 xl:px-12 xl:py-16 w-full max-w-xl mx-auto bg-white xl:shadow"
       >
-        <img
-          src="/images/logo.svg"
-          alt="Logo"
-          className=" w-44 mb-20 xl:mb-12"
-        />
+        <div className="text-4xl font-semibold text-yellow-300 mb-12">
+          Do Store
+        </div>
         <div className="flex flex-col w-full gap-y-3 mb-6">
-          <label className="text-sm text-gray-700">
-            아이디 &nbsp;
-            <span className=" text-red-500">*</span>
-          </label>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className=" border border-gray-300 outline-none shadow px-3 py-4 text-sm "
+            className=" border border-gray-300 outline-none focus:border-gray-500  px-3 py-4 text-sm "
             placeholder="아이디를 입력하세요."
           />
         </div>
         <div className="flex flex-col w-full gap-y-3 mb-12">
-          <label className="text-sm text-gray-700">
-            비밀번호 &nbsp;
-            <span className=" text-red-500">*</span>
-          </label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className=" border border-gray-300 outline-none shadow px-3 py-4 text-sm"
+            className=" border border-gray-300 outline-none focus:border-gray-500  px-3 py-4 text-sm"
             placeholder="비밀번호를 입력하세요."
           />
         </div>

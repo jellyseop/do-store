@@ -3,6 +3,7 @@ import { IRanking, RankingData } from "./lib/Ranking-service";
 import { IStudent } from "./definitions/StudentTypes";
 import { ICartItem } from "./definitions/ProductTypes";
 import { IRecord } from "./lib/UserFunction";
+import { IPartialOrder } from "./definitions/OrderType";
 
 export const studentDataState = atom<IStudent>({
   key: "studentDataState",
@@ -46,5 +47,10 @@ export const rankingIdState = atom<RankingData>({
 
 export const cartState = atom<ICartItem[]>({
   key: "cartState",
+  default: [],
+});
+
+export const orderState = atom<IPartialOrder[]>({
+  key: "orderState",
   default: [],
 });

@@ -25,28 +25,36 @@ const DoMoneyList: React.FC<DoMoneyListProps> = ({ transactions }) => {
         </tr>
       </thead>
       <tbody>
-        {transactions.map((transaction) => (
-          <tr
-            key={transaction.id}
-            className="border-b border-gray-300 h-14 text-sm text-gray-800"
-          >
-            <td className="py-2">{transaction.type}</td>
-            <td className="py-2">
-              {new Date(transaction.createdAt.seconds * 1000).toLocaleString()}
-            </td>
-            <td className="py-2">{transaction.createdBy}</td>
-            <div className="py-2">
-              <td className="flex items-center justify-center pt-2.5">
-                {transaction.amount}
-                <img
-                  src="/images/do-money.svg"
-                  alt="do-money"
-                  className="w-4 ml-1"
-                />
+        {transactions.map((transaction) => {
+          const isPositive = transaction.amount >= 0;
+          const sign = isPositive ? "+" : "-";
+          const absoluteAmount = Math.abs(transaction.amount);
+
+          const formattedDate = new Date(
+            transaction.createdAt.seconds * 1000
+          ).toLocaleDateString("ko-KR");
+
+          return (
+            <tr
+              key={transaction.id}
+              className="border-b border-gray-300 h-14 text-sm text-gray-800"
+            >
+              <td className="py-2">{sign}</td>
+              <td className="py-2">{formattedDate}</td>
+              <td className="py-2">{transaction.createdBy}</td>
+              <td className="py-2">
+                <div className="flex items-center justify-center pt-2.5">
+                  {absoluteAmount}
+                  <img
+                    src="/images/do-money.svg"
+                    alt="do-money"
+                    className="w-4 ml-1"
+                  />
+                </div>
               </td>
-            </div>
-          </tr>
-        ))}
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

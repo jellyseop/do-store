@@ -9,7 +9,7 @@ const MyPage: React.FC = () => {
       <div className="p-6 xl:container xl:mx-auto">
         {/* xl 이하일 때 보이는 내용 */}
         <div className="block xl:hidden">
-          <ProfileSummary showLink={false} />
+          <ProfileSummary showLink={true} />
           <MenuList />
         </div>
 

@@ -2,25 +2,46 @@ import { SetterOrUpdater } from "recoil";
 import { ICartItem, ProductProps } from "../definitions/ProductTypes";
 import { addToCart } from "../lib/cart-Service";
 import { convertProductToCartItem, formatMoney } from "../util";
+import { saveCartToLocalStorage } from "../localStorage";
 
 const Product: React.FC<
   ProductProps & { user_id: string; setter: SetterOrUpdater<ICartItem[]> }
 > = ({ user_id, setter, product }) => {
   const handleAddToCart = () => {
-    setter((prevCart) => [
-      ...prevCart,
-      {
-        ...product,
-        amount: 1,
-      },
-    ]);
-    try {
-      addToCart(user_id, convertProductToCartItem(product, 1));
-      alert("장바구니에 담겼습니다.");
-    } catch (error) {
-      console.error(error);
-      alert("장바구니에 담는 데 실패했습니다.");
-    }
+    setter((prevCart) => {
+      if (prevCart.length >= 5) {
+        alert("장바구니 최대개수는 5개 입니다.");
+        return prevCart;
+      }
+
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.id === product.id
+      );
+
+      let updatedCart;
+      if (existingItemIndex >= 0) {
+        updatedCart = [...prevCart];
+        updatedCart[existingItemIndex] = {
+          ...updatedCart[existingItemIndex],
+          amount: updatedCart[existingItemIndex].amount + 1,
+        };
+      } else {
+        const newItem = { ...product, amount: 1 };
+        updatedCart = [...prevCart, newItem];
+      }
+
+      saveCartToLocalStorage(updatedCart);
+
+      try {
+        addToCart(user_id, convertProductToCartItem(product, 1));
+        alert("장바구니에 담겼습니다.");
+      } catch (error) {
+        console.error(error);
+        alert("장바구니에 담는 데 실패했습니다.");
+      }
+
+      return updatedCart;
+    });
   };
 
   return (

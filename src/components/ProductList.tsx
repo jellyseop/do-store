@@ -12,20 +12,40 @@ const ListItem: React.FC<
   ProductProps & { user_id: string; setter: SetterOrUpdater<ICartItem[]> }
 > = ({ user_id, setter, idx, product }) => {
   const handleAddToCart = () => {
-    setter((prevCart) => [
-      ...prevCart,
-      {
-        ...product,
-        amount: 1,
-      },
-    ]);
-    try {
-      addToCart(user_id, convertProductToCartItem(product, 1));
-      alert("장바구니에 담겼습니다.");
-    } catch (error) {
-      console.error(error);
-      alert("장바구니에 담는 데 실패했습니다.");
-    }
+    setter((prevCart) => {
+      if (prevCart.length >= 5) {
+        alert("장바구니 최대개수는 5개 입니다.");
+        return prevCart;
+      }
+
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.id === product.id
+      );
+
+      let updatedCart;
+      if (existingItemIndex >= 0) {
+        updatedCart = [...prevCart];
+        updatedCart[existingItemIndex] = {
+          ...updatedCart[existingItemIndex],
+          amount: updatedCart[existingItemIndex].amount + 1,
+        };
+      } else {
+        const newItem = { ...product, amount: 1 };
+        updatedCart = [...prevCart, newItem];
+      }
+
+      saveCartToLocalStorage(updatedCart);
+
+      try {
+        addToCart(user_id, convertProductToCartItem(product, 1));
+        alert("장바구니에 담겼습니다.");
+      } catch (error) {
+        console.error(error);
+        alert("장바구니에 담는 데 실패했습니다.");
+      }
+
+      return updatedCart;
+    });
   };
 
   return (
@@ -33,7 +53,7 @@ const ListItem: React.FC<
       {/*모바일 아이템*/}
       <li
         id={product.id + ""}
-        className="xl:hidden flex items-start py-4 border-b last:border-none last:pb-0 border-gray-200"
+        className="xl:hidden flex items-start py-4 border-b last:border-b-0 last:pb-0 border-gray-200"
       >
         <span className="font-light ml-3">{idx + 1}</span>
         <img

@@ -3,9 +3,13 @@ import SearchBar from "./SearchBar";
 import ProfileSummary from "./ProfileSummary";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { cartState } from "../atmos";
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
+  const cartItems = useRecoilValue(cartState);
+  const cartItemcount = cartItems.length;
 
   return (
     <header className=" sticky top-0 left-0 pt-6 xl:pt-4 px-6 w-full border-b border-gray-200 bg-white ">
@@ -22,11 +26,16 @@ const Header: React.FC = () => {
           <SearchBar />
         </div>
         <Link to="/cart" className="block">
-          <img
-            src="/images/cart-icon.svg"
-            alt="Cart"
-            className="w-7 aspect-square"
-          />
+          <div className="flex flex-row">
+            <img
+              src="/images/cart-icon.svg"
+              alt="Cart"
+              className="w-7 aspect-square"
+            />
+            <span className="flex items-center justify-center w-5 h-5 text-sm text-yellow-300 border-2 border-yellow-300 rounded-full -mt-2">
+              {cartItemcount}
+            </span>
+          </div>
         </Link>
       </div>
       {/*모바일 검색*/}
