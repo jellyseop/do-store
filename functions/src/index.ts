@@ -2,7 +2,6 @@ import { onRequest } from "firebase-functions/v2/https";
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-import { error } from "firebase-functions/logger";
 
 interface DoRecord {
   amount: number;
@@ -65,8 +64,9 @@ initializeApp({
 const db = getFirestore();
 const auth = getAuth();
 
-export const helloWorld = onRequest(async (req, res): Promise<any> => {
+export const orderFunction = onRequest(async (req, res): Promise<any> => {
   const idToken = req.headers.authorization?.split("Bearer ")[1];
+
   if (!idToken) {
     return res
       .status(401)
@@ -75,13 +75,14 @@ export const helloWorld = onRequest(async (req, res): Promise<any> => {
 
   try {
     const user = await auth.verifyIdToken(idToken);
-
     if (!user) {
       return res.status(401).send({ ok: false, error: "unauthenticated." });
     }
 
     const studentRef = db.collection("students").doc(user.uid);
+
     const studentSnapshot = await studentRef.get();
+
     if (!studentSnapshot.exists) {
       return res.status(404).send({ ok: false, error: "unauthorized." });
     }
